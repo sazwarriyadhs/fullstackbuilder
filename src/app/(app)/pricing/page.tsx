@@ -1,9 +1,12 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Check } from "lucide-react";
 import Image from "next/image";
 import QRCodeComponent from "@/components/QRCodeComponent";
+import { useToast } from "@/hooks/use-toast";
 
 const tiers = [
   {
@@ -64,6 +67,8 @@ const ewallets = [
 ];
 
 export default function PricingPage() {
+  const { toast } = useToast()
+
   return (
     <div className="max-w-5xl mx-auto">
       <div className="text-center">
@@ -124,7 +129,17 @@ export default function PricingPage() {
                           </DialogHeader>
                           <QRCodeComponent />
                           <DialogFooter>
-                            <Button className="w-full">Konfirmasi Pembayaran</Button>
+                            <Button 
+                              className="w-full"
+                              onClick={() => {
+                                toast({
+                                  title: "Pembayaran Berhasil",
+                                  description: "Paket Pro Anda telah aktif.",
+                                });
+                              }}
+                            >
+                              Konfirmasi Pembayaran
+                            </Button>
                           </DialogFooter>
                         </DialogContent>
                       </Dialog>
