@@ -5,7 +5,7 @@ import { Card as UICard, CardContent, CardHeader, CardTitle, CardDescription } f
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
-import { Undo2, Redo2, Save, FolderDown, Eye } from "lucide-react"
+import { Undo2, Redo2, Save, FolderDown, Eye, Download } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -129,6 +129,30 @@ export default function BuilderCanvas({
             setComponents(designData.components || []);
         }
     };
+
+    const handleDownload = async () => {
+        const response = await fetch('/api/download', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ title: designTitle, components }),
+        });
+    
+        if (response.ok) {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `${designTitle.toLowerCase().replace(/\s+/g, '-')}.zip`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          window.URL.revokeObjectURL(url);
+        } else {
+          console.error('Failed to download design');
+        }
+      };
     
 
   return (
@@ -169,6 +193,10 @@ export default function BuilderCanvas({
                  <Button onClick={handleLoad} variant="outline">
                     <FolderDown className="mr-2" />
                     Muat
+                </Button>
+                <Button onClick={handleDownload} variant="outline">
+                    <Download className="mr-2" />
+                    Unduh
                 </Button>
             </div>
         </div>
