@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Heading1, Type, MousePointerClick, RectangleHorizontal, Pilcrow } from "lucide-react"
+import { Heading1, Type, MousePointerClick, RectangleHorizontal, Pilcrow, ImageIcon } from "lucide-react"
 
 const components = [
   { name: "Heading", icon: Heading1, type: 'heading' },
@@ -9,6 +9,7 @@ const components = [
   { name: "Button", icon: MousePointerClick, type: 'button' },
   { name: "Input", icon: Type, type: 'input' },
   { name: "Card", icon: RectangleHorizontal, type: 'card' },
+  { name: "Image", icon: ImageIcon, type: 'image' },
 ]
 
 interface BuilderToolsProps {
