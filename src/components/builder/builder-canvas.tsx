@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card as UICard, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
-import { Download, Undo2, Redo2 } from "lucide-react"
+import { Download, Undo2, Redo2, Save, FolderDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -101,24 +101,17 @@ export default function BuilderCanvas({
         id: 'canvas',
     });
 
-    const handleExport = () => {
-        const design = {
-          name: 'Untitled Design',
-          components: components.map(({icon, ...rest}) => rest), // Remove icon before export
-          schema: {
-            "users": {
-              "id": "INT PRIMARY KEY",
-              "name": "VARCHAR(255)",
-              "email": "VARCHAR(255)"
-            }
-          }
-        };
-        const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(design, null, 2))}`;
-        const link = document.createElement("a");
-        link.href = jsonString;
-        link.download = "design.json";
-        link.click();
+    const handleSave = () => {
+        localStorage.setItem('design', JSON.stringify(components));
     };
+    
+    const handleLoad = () => {
+        const saved = localStorage.getItem('design');
+        if (saved) {
+            setComponents(JSON.parse(saved));
+        }
+    };
+    
 
   return (
     <div className="flex-1 flex flex-col gap-4">
@@ -133,9 +126,13 @@ export default function BuilderCanvas({
                     <Redo2 />
                     <span className="sr-only">Redo</span>
                 </Button>
-                <Button onClick={handleExport} variant="outline" disabled={components.length === 0}>
-                    <Download className="mr-2" />
-                    Export JSON
+                <Button onClick={handleSave} variant="outline">
+                    <Save className="mr-2" />
+                    Save
+                </Button>
+                 <Button onClick={handleLoad} variant="outline">
+                    <FolderDown className="mr-2" />
+                    Load
                 </Button>
             </div>
         </div>
