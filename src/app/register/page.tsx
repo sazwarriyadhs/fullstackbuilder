@@ -32,7 +32,7 @@ export default function RegisterForm() {
         <CardHeader>
             <div className="flex justify-center mb-4">
                 <Link href="/" className="flex items-center gap-2 font-bold text-xl text-primary">
-                    <Image src="/images/logo.png" alt="DesignSync Canvas Logo" width={180} height={40} />
+                    <Image src="/images/logo.png" alt="DesignSync Canvas Logo" width={240} height={54} />
                 </Link>
             </div>
           <CardTitle className="text-2xl">Sign Up</CardTitle>

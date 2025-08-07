@@ -36,7 +36,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <Sidebar>
         <SidebarHeader>
           <Link href="/builder" className="flex items-center gap-2 font-bold text-xl text-sidebar-primary">
-            <Image src="/images/logo.png" alt="DesignSync Logo" width={150} height={30} className="group-data-[collapsible=icon]:hidden" />
+            <Image src="/images/logo.png" alt="DesignSync Logo" width={225} height={45} className="group-data-[collapsible=icon]:hidden" />
             <Palette className="hidden group-data-[collapsible=icon]:block" />
           </Link>
         </SidebarHeader>
