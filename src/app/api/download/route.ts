@@ -58,6 +58,10 @@ export default function Home() {
     `;
 }
 
+function generateComponentsJsonContent(components: Component[]): string {
+    return JSON.stringify({ components }, null, 2);
+}
+
 const globalsCssContent = `@tailwind base;
 @tailwind components;
 @tailwind utilities;`;
@@ -115,10 +119,12 @@ export async function POST(request: NextRequest) {
 
     // Generate page content
     const pageContent = generatePageContent(title, components);
+    const componentsJsonContent = generateComponentsJsonContent(components);
 
     // Add files to zip
     zip.file('package.json', packageJsonContent);
     zip.file('tailwind.config.js', tailwindConfigContent);
+    zip.file('components.json', componentsJsonContent);
 
     const appFolder = zip.folder('app');
     if (appFolder) {

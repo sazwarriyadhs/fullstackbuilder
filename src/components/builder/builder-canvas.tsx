@@ -5,12 +5,15 @@ import { Card as UICard, CardContent, CardHeader, CardTitle, CardDescription } f
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
-import { Undo2, Redo2, Save, FolderDown, Eye, Download } from "lucide-react"
+import { Undo2, Redo2, Save, FolderDown, Eye, Download, Upload } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import type { Component } from "@/app/(app)/builder/page";
+import React, { useRef } from "react";
+import JSZip from 'jszip';
+import { useToast } from "@/hooks/use-toast";
 
 interface BuilderCanvasProps {
     components: Component[];
@@ -114,6 +117,8 @@ export default function BuilderCanvas({
     const {setNodeRef} = useDroppable({
         id: 'canvas-dropzone',
     });
+    const uploadInputRef = useRef<HTMLInputElement>(null);
+    const { toast } = useToast();
 
     const handleSave = () => {
         const designData = { title: designTitle, components };
@@ -152,8 +157,56 @@ export default function BuilderCanvas({
         } else {
           console.error('Failed to download design');
         }
-      };
+    };
     
+    const handleUploadClick = () => {
+        uploadInputRef.current?.click();
+    };
+
+    const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        if (file.type !== 'application/zip') {
+            toast({
+                variant: 'destructive',
+                title: 'Invalid File Type',
+                description: 'Please upload a .zip file.',
+            });
+            return;
+        }
+
+        const zip = new JSZip();
+        try {
+            const content = await zip.loadAsync(file);
+            const componentsFile = content.file('components.json');
+            if (componentsFile) {
+                const componentsJson = await componentsFile.async('string');
+                const { components: loadedComponents } = JSON.parse(componentsJson);
+                setComponents(loadedComponents);
+                toast({
+                    title: 'Upload Successful',
+                    description: 'Your design has been loaded into the builder.',
+                });
+            } else {
+                toast({
+                    variant: 'destructive',
+                    title: 'Invalid Zip File',
+                    description: 'The zip file must contain a "components.json" file.',
+                });
+            }
+        } catch (error) {
+            toast({
+                variant: 'destructive',
+                title: 'Upload Failed',
+                description: 'There was an error processing your zip file.',
+            });
+            console.error("Failed to upload and process zip file:", error);
+        }
+
+        // Reset the input value to allow uploading the same file again
+        event.target.value = '';
+    };
 
   return (
     <div className="flex-1 flex flex-col gap-4">
@@ -193,6 +246,17 @@ export default function BuilderCanvas({
                  <Button onClick={handleLoad} variant="outline">
                     <FolderDown className="mr-2" />
                     Muat
+                </Button>
+                <input
+                    type="file"
+                    ref={uploadInputRef}
+                    onChange={handleFileUpload}
+                    className="hidden"
+                    accept=".zip"
+                />
+                <Button onClick={handleUploadClick} variant="outline">
+                    <Upload className="mr-2" />
+                    Unggah
                 </Button>
                 <Button onClick={handleDownload} variant="outline">
                     <Download className="mr-2" />
