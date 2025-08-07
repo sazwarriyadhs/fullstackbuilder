@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Check } from "lucide-react";
 import Image from "next/image";
+import QRCodeComponent from "@/components/qris-code";
 
 const tiers = [
   {
@@ -112,7 +113,7 @@ export default function PricingPage() {
                     {ewallets.map((wallet) => (
                       <Dialog key={wallet.name}>
                         <DialogTrigger asChild>
-                          <button className="flex items-center justify-center p-4 bg-muted/50 rounded-lg transition-transform hover:scale-105">
+                          <button className="flex items-center justify-center p-4 bg-muted/50 rounded-lg transition-transform hover:scale-105 h-24">
                             <Image src={wallet.logo} alt={wallet.alt} width={100} height={40} objectFit="contain" data-ai-hint={wallet.hint} />
                           </button>
                         </DialogTrigger>
@@ -121,13 +122,7 @@ export default function PricingPage() {
                             <DialogTitle>Pembayaran dengan {wallet.name}</DialogTitle>
                             <DialogDescription>Pindai kode QR di bawah untuk menyelesaikan pembayaran Anda.</DialogDescription>
                           </DialogHeader>
-                          <div className="flex flex-col items-center gap-4 py-4">
-                            <Image src="/images/qris.png" alt="QR Code" width={250} height={250} className="rounded-lg" data-ai-hint="payment qris" />
-                            <div className="text-center">
-                              <p className="font-medium">087864530047</p>
-                              <p className="text-xs text-muted-foreground">a.n Azwar Riyadh Subarkah</p>
-                            </div>
-                          </div>
+                          <QRCodeComponent />
                           <DialogFooter>
                             <Button className="w-full">Konfirmasi Pembayaran</Button>
                           </DialogFooter>
