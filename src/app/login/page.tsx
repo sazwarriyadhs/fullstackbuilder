@@ -3,6 +3,9 @@
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth"
+import { auth } from "@/lib/firebase"
+import { useToast } from "@/hooks/use-toast"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -14,17 +17,42 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Palette } from "lucide-react"
+import React from "react"
 
 export default function LoginForm() {
     const router = useRouter()
+    const { toast } = useToast()
+    const [email, setEmail] = React.useState('')
+    const [password, setPassword] = React.useState('')
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault()
-        // Here you would typically handle authentication
-        // For this scaffold, we'll just navigate to the builder
-        router.push("/builder")
+        try {
+            await signInWithEmailAndPassword(auth, email, password)
+            router.push("/builder")
+        } catch (error: any) {
+            toast({
+                title: "Login Failed",
+                description: error.message,
+                variant: "destructive"
+            })
+        }
     }
+    
+    const handleGoogleLogin = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            await signInWithPopup(auth, provider);
+            router.push("/builder");
+        } catch (error: any) {
+            toast({
+                title: "Google Login Failed",
+                description: error.message,
+                variant: "destructive",
+            });
+        }
+    };
+
 
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -49,6 +77,8 @@ export default function LoginForm() {
                 type="email"
                 placeholder="m@example.com"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="grid gap-2">
@@ -58,12 +88,18 @@ export default function LoginForm() {
                   Forgot your password?
                 </Link>
               </div>
-              <Input id="password" type="password" required />
+              <Input 
+                id="password" 
+                type="password" 
+                required 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
             <Button type="submit" className="w-full">
               Login
             </Button>
-            <Button variant="outline" className="w-full">
+            <Button variant="outline" className="w-full" onClick={handleGoogleLogin} type="button">
               Login with Google
             </Button>
           </form>

@@ -18,7 +18,6 @@ import {
   GalleryVertical,
   Gem,
   Settings,
-  Palette,
 } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -37,7 +36,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <SidebarHeader>
           <Link href="/builder" className="flex items-center gap-2 font-bold text-xl text-sidebar-primary">
             <Image src="/images/logo.png" alt="DesignSync Logo" width={225} height={45} className="group-data-[collapsible=icon]:hidden" />
-            <Palette className="hidden group-data-[collapsible=icon]:block" />
+            <Image src="/images/logo.png" alt="DesignSync Logo" width={45} height={45} className="hidden group-data-[collapsible=icon]:block" />
           </Link>
         </SidebarHeader>
         <SidebarContent>
