@@ -40,7 +40,7 @@ const commonFields = [
   { id: "placeholder", label: "Placeholder", forTypes: ["input"] },
 ]
 
-const componentFields: Record<string, { id: string, label: string }[]> = {
+const componentFields: Record<string, { id: string; label: string }[]> = {
   card: [
     { id: "title", label: "Title" },
     { id: "description", label: "Description" },
@@ -54,12 +54,28 @@ const componentFields: Record<string, { id: string, label: string }[]> = {
 }
 
 export default function PropertiesPanel({ selectedComponent, onUpdateComponent }: PropertiesPanelProps) {
+  // Use a local state to manage input changes to avoid re-rendering the whole tree on every keystroke
+  const [localProps, setLocalProps] = useState(selectedComponent?.props || {});
+
+  useEffect(() => {
+    setLocalProps(selectedComponent?.props || {});
+  }, [selectedComponent]);
+
+  const handleInputChange = (fieldId: string, value: string) => {
+    setLocalProps(currentProps => ({ ...currentProps, [fieldId]: value }));
+  }
+
+  const handleBlur = (fieldId: string) => {
+    if (selectedComponent && localProps[fieldId] !== selectedComponent.props?.[fieldId]) {
+      onUpdateComponent(selectedComponent.id, { [fieldId]: localProps[fieldId] });
+    }
+  }
 
   const renderProperties = () => {
     if (!selectedComponent) {
       return (
-        <div className="flex items-center justify-center h-full">
-          <p className="text-muted-foreground">Select a component to edit</p>
+        <div className="flex items-center justify-center h-full p-4 text-center">
+          <p className="text-muted-foreground">Pilih komponen untuk diedit propertinya</p>
         </div>
       )
     }
@@ -69,31 +85,29 @@ export default function PropertiesPanel({ selectedComponent, onUpdateComponent }
       ...(componentFields[selectedComponent.type] || [])
     ];
     
-    const handleInputChange = (fieldId: string, value: string) => {
-        if(selectedComponent) {
-            onUpdateComponent(selectedComponent.id, { [fieldId]: value });
-        }
-    }
-
-
     return (
       <div className="space-y-6 p-4">
         <div>
           <h3 className="text-lg font-medium capitalize">{selectedComponent.type} Properties</h3>
-          <p className="text-sm text-muted-foreground">ID: `{selectedComponent.id}`</p>
+          <p className="text-sm text-muted-foreground break-all">ID: `{selectedComponent.id}`</p>
         </div>
-        <div className="space-y-4">
-          {fields.map(field => (
-            <div key={field.id} className="space-y-2">
-              <Label htmlFor={field.id}>{field.label}</Label>
-              <Input 
-                id={field.id} 
-                value={selectedComponent.props?.[field.id] || ""}
-                onChange={(e) => handleInputChange(field.id, e.target.value)}
-              />
-            </div>
-          ))}
-        </div>
+        {fields.length > 0 ? (
+          <div className="space-y-4">
+            {fields.map(field => (
+              <div key={field.id} className="space-y-2">
+                <Label htmlFor={field.id}>{field.label}</Label>
+                <Input 
+                  id={field.id} 
+                  value={localProps[field.id] || ""}
+                  onChange={(e) => handleInputChange(field.id, e.target.value)}
+                  onBlur={() => handleBlur(field.id)}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground">Tidak ada properti yang dapat diedit untuk komponen ini.</p>
+        )}
       </div>
     )
   }

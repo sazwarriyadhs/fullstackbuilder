@@ -1,6 +1,5 @@
 "use client"
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card as UICard, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -61,12 +60,12 @@ const renderPreviewComponent = (component: Component) => {
                 </div>
              )
         default:
-            return null
+            return <div className="p-2 border rounded-md bg-muted text-muted-foreground">Unknown Component: {component.type}</div>
     }
 }
 
 
-const SortableItem = ({ component, onSelectComponent, selectedComponent }: { component: Component, onSelectComponent: (c: Component) => void, selectedComponent: Component | null }) => {
+const SortableItem = ({ component, onSelectComponent, selectedComponent }: { component: Component, onSelectComponent: (c: Component | null) => void, selectedComponent: Component | null }) => {
     const {
         attributes,
         listeners,
@@ -82,54 +81,21 @@ const SortableItem = ({ component, onSelectComponent, selectedComponent }: { com
 
       const isSelected = selectedComponent?.id === component.id;
 
-    const renderComponent = (component: Component) => {
-        const className = cn("cursor-grab active:cursor-grabbing", {
-            "ring-2 ring-primary ring-offset-2": isSelected,
-        });
-
-        const props = component.props || {};
-
-        switch(component.type) {
-            case 'heading':
-                return <h1 onClick={() => onSelectComponent(component)} className={cn("text-4xl font-bold", className)}>{props.text || 'Heading'}</h1>
-            case 'text':
-                return <p onClick={() => onSelectComponent(component)} className={className}>{props.text || 'Blok teks'}</p>
-            case 'button':
-                return <Button onClick={() => onSelectComponent(component)} className={className}>{props.text || 'Klik Saya'}</Button>
-            case 'input':
-                return <Input onClick={() => onSelectComponent(component)} placeholder={props.placeholder || "Input teks"} className={cn("w-48", className)} />
-            case 'card':
-                return (
-                    <UICard onClick={() => onSelectComponent(component)} className={cn("w-64", className)}>
-                        <CardHeader>
-                            <CardTitle>{props.title || 'Judul Kartu'}</CardTitle>
-                            <CardDescription>{props.description || 'Deskripsi Kartu'}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <p>{props.content || 'Konten kartu ada di sini.'}</p>
-                        </CardContent>
-                    </UICard>
-                )
-            case 'image':
-                 return (
-                    <div onClick={() => onSelectComponent(component)} className={cn("w-48 h-32 relative", className)}>
-                        <Image 
-                            src={props.src || "https://placehold.co/300x200.png"}
-                            alt={props.alt || "placeholder"}
-                            fill
-                            className="bg-muted object-cover rounded-md"
-                            data-ai-hint={props.aiHint || "placeholder"}
-                        />
-                    </div>
-                 )
-            default:
-                return null
-        }
-    }
-
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners} onClick={() => onSelectComponent(component)}>
-            {renderComponent(component)}
+        <div 
+            ref={setNodeRef} 
+            style={style} 
+            {...attributes} 
+            {...listeners} 
+            onClick={(e) => {
+                e.stopPropagation();
+                onSelectComponent(component);
+            }}
+            className={cn("cursor-grab active:cursor-grabbing p-1 rounded-md", {
+                "ring-2 ring-primary ring-offset-2": isSelected,
+            })}
+        >
+            {renderPreviewComponent(component)}
         </div>
     )
 }
@@ -146,17 +112,21 @@ export default function BuilderCanvas({
     designTitle
 }: BuilderCanvasProps) {
     const {setNodeRef} = useDroppable({
-        id: 'canvas',
+        id: 'canvas-dropzone',
     });
 
     const handleSave = () => {
-        localStorage.setItem('design', JSON.stringify(components));
+        const designData = { title: designTitle, components };
+        localStorage.setItem('design', JSON.stringify(designData));
     };
     
     const handleLoad = () => {
         const saved = localStorage.getItem('design');
         if (saved) {
-            setComponents(JSON.parse(saved));
+            const designData = JSON.parse(saved);
+            // This should be handled in the parent component to also set title
+            // For now, just setting components
+            setComponents(designData.components || []);
         }
     };
     
@@ -166,13 +136,11 @@ export default function BuilderCanvas({
         <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold font-headline">{designTitle}</h1>
             <div className="flex items-center gap-2">
-                <Button onClick={onUndo} variant="outline" size="icon" disabled={!canUndo}>
+                <Button onClick={onUndo} variant="outline" size="icon" disabled={!canUndo} aria-label="Undo">
                     <Undo2 />
-                    <span className="sr-only">Urungkan</span>
                 </Button>
-                <Button onClick={onRedo} variant="outline" size="icon" disabled={!canRedo}>
+                <Button onClick={onRedo} variant="outline" size="icon" disabled={!canRedo} aria-label="Redo">
                     <Redo2 />
-                    <span className="sr-only">Ulangi</span>
                 </Button>
                  <Dialog>
                     <DialogTrigger asChild>
@@ -185,9 +153,9 @@ export default function BuilderCanvas({
                         <DialogHeader>
                             <DialogTitle>Pratinjau Desain</DialogTitle>
                         </DialogHeader>
-                        <div className="border rounded-md p-4 space-y-4 h-full overflow-auto">
+                        <div className="border rounded-md p-4 space-y-4 h-full overflow-auto bg-background">
                            {components.map(component => (
-                             <div key={component.id}>
+                             <div key={component.id} className="flex justify-start">
                                {renderPreviewComponent(component)}
                              </div>
                            ))}
@@ -204,13 +172,19 @@ export default function BuilderCanvas({
                 </Button>
             </div>
         </div>
-        <UICard ref={setNodeRef} className="flex-1 w-full grid-bg" onClick={() => onSelectComponent(null)}>
-            <div className="flex flex-wrap items-start justify-start p-4 gap-4 h-full">
+        <UICard 
+            ref={setNodeRef} 
+            className="flex-1 w-full grid-bg overflow-auto" 
+            onClick={() => onSelectComponent(null)}
+        >
+            <div className="p-4 h-full">
                 {components.length > 0 ? (
-                    <SortableContext items={components.map(c => c.id)} strategy={verticalListSortingStrategy}>
-                        {components.map((comp) => (
-                           <SortableItem key={comp.id} component={comp} onSelectComponent={onSelectComponent} selectedComponent={selectedComponent} />
-                        ))}
+                    <SortableContext items={components} strategy={verticalListSortingStrategy}>
+                        <div className="flex flex-col items-start gap-4">
+                            {components.map((comp) => (
+                               <SortableItem key={comp.id} component={comp} onSelectComponent={onSelectComponent} selectedComponent={selectedComponent} />
+                            ))}
+                        </div>
                     </SortableContext>
                 ) : (
                     <div className="flex items-center justify-center h-full w-full">

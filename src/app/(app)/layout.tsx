@@ -27,7 +27,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
 
   const isActive = (path: string) => {
-    return pathname === path
+    return pathname.startsWith(path) && (path !== '/builder' || pathname === '/builder')
   }
 
   return (
@@ -66,7 +66,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={pathname.startsWith("/settings")} tooltip="Settings">
+              <SidebarMenuButton asChild isActive={isActive("/settings")} tooltip="Settings">
                 <Link href="/settings/database">
                   <Settings />
                   Settings

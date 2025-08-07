@@ -18,7 +18,6 @@ interface Template {
   description: string;
   image: string;
   aiHint: string;
-  url: string;
 }
 
 interface EditingTemplate {
@@ -67,12 +66,10 @@ export default function TemplatesPage() {
   };
   
   const createBuilderLink = (template: Template) => {
-    const templateData = {
-      id: template.id,
-      title: template.title,
-    };
-    const serializedData = encodeURIComponent(JSON.stringify(templateData));
-    return `/builder?template=${serializedData}`;
+    const params = new URLSearchParams();
+    params.set('templateId', template.id);
+    params.set('templateTitle', template.title);
+    return `/builder?${params.toString()}`;
   };
 
   return (
