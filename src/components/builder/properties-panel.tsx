@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Code, Eye } from "lucide-react"
+import { Component } from "@/app/(app)/builder/page"
+import React, { useEffect, useState } from "react"
 
 const designSchema = `{
   "users": {
@@ -29,10 +31,29 @@ const designSchema = `{
 }`
 
 interface PropertiesPanelProps {
-  selectedComponent: any;
+  selectedComponent: Component | null;
+  onUpdateComponent: (id: string, newProps: any) => void;
 }
 
-export default function PropertiesPanel({ selectedComponent }: PropertiesPanelProps) {
+const commonFields = [
+  { id: "text", label: "Text", forTypes: ["heading", "text", "button"] },
+  { id: "placeholder", label: "Placeholder", forTypes: ["input"] },
+]
+
+const componentFields: Record<string, { id: string, label: string }[]> = {
+  card: [
+    { id: "title", label: "Title" },
+    { id: "description", label: "Description" },
+    { id: "content", label: "Content" },
+  ],
+  image: [
+      { id: "src", label: "Image URL" },
+      { id: "alt", label: "Alt Text" },
+      { id: "aiHint", label: "AI Hint" },
+  ]
+}
+
+export default function PropertiesPanel({ selectedComponent, onUpdateComponent }: PropertiesPanelProps) {
 
   const renderProperties = () => {
     if (!selectedComponent) {
@@ -43,29 +64,35 @@ export default function PropertiesPanel({ selectedComponent }: PropertiesPanelPr
       )
     }
 
+    const fields = [
+      ...commonFields.filter(f => f.forTypes.includes(selectedComponent.type)),
+      ...(componentFields[selectedComponent.type] || [])
+    ];
+    
+    const handleInputChange = (fieldId: string, value: string) => {
+        if(selectedComponent) {
+            onUpdateComponent(selectedComponent.id, { [fieldId]: value });
+        }
+    }
+
+
     return (
       <div className="space-y-6 p-4">
         <div>
           <h3 className="text-lg font-medium capitalize">{selectedComponent.type} Properties</h3>
-          <p className="text-sm text-muted-foreground">Selected: `{selectedComponent.name}`</p>
+          <p className="text-sm text-muted-foreground">ID: `{selectedComponent.id}`</p>
         </div>
         <div className="space-y-4">
-            <div className="space-y-2">
-                <Label htmlFor="text">Text</Label>
-                <Input id="text" defaultValue="Get Started"/>
+          {fields.map(field => (
+            <div key={field.id} className="space-y-2">
+              <Label htmlFor={field.id}>{field.label}</Label>
+              <Input 
+                id={field.id} 
+                value={selectedComponent.props?.[field.id] || ""}
+                onChange={(e) => handleInputChange(field.id, e.target.value)}
+              />
             </div>
-              <div className="space-y-2">
-                <Label htmlFor="color">Background Color</Label>
-                <Input id="color" defaultValue="#3F51B5"/>
-            </div>
-              <div className="space-y-2">
-                <Label htmlFor="padding">Padding</Label>
-                <Input id="padding" defaultValue="12px 24px"/>
-            </div>
-              <div className="space-y-2">
-                <Label htmlFor="border-radius">Border Radius</Label>
-                <Input id="border-radius" defaultValue="8px"/>
-            </div>
+          ))}
         </div>
       </div>
     )

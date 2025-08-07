@@ -9,19 +9,20 @@ import { cn } from "@/lib/utils"
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import type { Component } from "@/app/(app)/builder/page";
 
 interface BuilderCanvasProps {
-    components: any[];
-    setComponents: (components: any[] | ((prev: any[]) => any[])) => void;
-    onSelectComponent: (component: any) => void;
-    selectedComponent: any;
+    components: Component[];
+    setComponents: (components: Component[] | ((prev: Component[]) => Component[])) => void;
+    onSelectComponent: (component: Component | null) => void;
+    selectedComponent: Component | null;
     onUndo: () => void;
     onRedo: () => void;
     canUndo: boolean;
     canRedo: boolean;
 }
 
-const SortableItem = ({ component, onSelectComponent, selectedComponent }: { component: any, onSelectComponent: (c: any) => void, selectedComponent: any }) => {
+const SortableItem = ({ component, onSelectComponent, selectedComponent }: { component: Component, onSelectComponent: (c: Component) => void, selectedComponent: Component | null }) => {
     const {
         attributes,
         listeners,
@@ -37,29 +38,31 @@ const SortableItem = ({ component, onSelectComponent, selectedComponent }: { com
 
       const isSelected = selectedComponent?.id === component.id;
 
-    const renderComponent = (component: any) => {
+    const renderComponent = (component: Component) => {
         const className = cn("cursor-grab active:cursor-grabbing", {
             "ring-2 ring-primary ring-offset-2": isSelected,
         });
 
+        const props = component.props || {};
+
         switch(component.type) {
             case 'heading':
-                return <h1 onClick={() => onSelectComponent(component)} className={cn("text-4xl font-bold", className)}>Heading</h1>
+                return <h1 onClick={() => onSelectComponent(component)} className={cn("text-4xl font-bold", className)}>{props.text || 'Heading'}</h1>
             case 'text':
-                return <p onClick={() => onSelectComponent(component)} className={className}>Text block</p>
+                return <p onClick={() => onSelectComponent(component)} className={className}>{props.text || 'Text block'}</p>
             case 'button':
-                return <Button onClick={() => onSelectComponent(component)} className={className}>Click Me</Button>
+                return <Button onClick={() => onSelectComponent(component)} className={className}>{props.text || 'Click Me'}</Button>
             case 'input':
-                return <Input onClick={() => onSelectComponent(component)} placeholder="Text Input" className={cn("w-48", className)} />
+                return <Input onClick={() => onSelectComponent(component)} placeholder={props.placeholder || "Text Input"} className={cn("w-48", className)} />
             case 'card':
                 return (
                     <UICard onClick={() => onSelectComponent(component)} className={cn("w-64", className)}>
                         <CardHeader>
-                            <CardTitle>Card Title</CardTitle>
-                            <CardDescription>Card Description</CardDescription>
+                            <CardTitle>{props.title || 'Card Title'}</CardTitle>
+                            <CardDescription>{props.description || 'Card Description'}</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <p>Card content goes here.</p>
+                            <p>{props.content || 'Card content goes here.'}</p>
                         </CardContent>
                     </UICard>
                 )
@@ -67,11 +70,11 @@ const SortableItem = ({ component, onSelectComponent, selectedComponent }: { com
                  return (
                     <div onClick={() => onSelectComponent(component)} className={cn("w-48 h-32 relative", className)}>
                         <Image 
-                            src="https://placehold.co/300x200.png"
-                            alt="placeholder"
+                            src={props.src || "https://placehold.co/300x200.png"}
+                            alt={props.alt || "placeholder"}
                             fill
                             className="bg-muted object-cover rounded-md"
-                            data-ai-hint="placeholder"
+                            data-ai-hint={props.aiHint || "placeholder"}
                         />
                     </div>
                  )
@@ -81,7 +84,7 @@ const SortableItem = ({ component, onSelectComponent, selectedComponent }: { com
     }
 
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners} onClick={() => onSelectComponent(component)}>
             {renderComponent(component)}
         </div>
     )
@@ -136,7 +139,7 @@ export default function BuilderCanvas({
                 </Button>
             </div>
         </div>
-        <UICard ref={setNodeRef} className="flex-1 w-full grid-bg">
+        <UICard ref={setNodeRef} className="flex-1 w-full grid-bg" onClick={() => onSelectComponent(null)}>
             <div className="flex flex-wrap items-start justify-start p-4 gap-4 h-full">
                 {components.length > 0 ? (
                     <SortableContext items={components.map(c => c.id)} strategy={verticalListSortingStrategy}>

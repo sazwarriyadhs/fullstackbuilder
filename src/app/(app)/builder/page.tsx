@@ -8,17 +8,27 @@ import BuilderTools from "@/components/builder/builder-tools"
 import BuilderCanvas from "@/components/builder/builder-canvas"
 import PropertiesPanel from "@/components/builder/properties-panel"
 
+export type Component = {
+  id: string;
+  type: string;
+  name: string;
+  props?: Record<string, any>;
+};
+
+
 export default function BuilderPage() {
-  const [components, setComponents] = useState<any[]>([])
+  const [components, setComponents] = useState<Component[]>([])
   const [history, setHistory] = useState<any[][]>([])
   const [future, setFuture] = useState<any[][]>([])
-  const [selectedComponent, setSelectedComponent] = useState<any>(null)
+  const [selectedComponent, setSelectedComponent] = useState<Component | null>(null)
 
   const handleAddComponent = (component: any) => {
-    const newComponents = [...components, { ...component, id: Date.now() }]
+    const newComponent = { ...component, id: `${component.type}-${Date.now()}` }
+    const newComponents = [...components, newComponent]
     setHistory([...history, components])
     setComponents(newComponents)
     setFuture([])
+    handleSelectComponent(newComponent)
   }
 
   const handleSetComponents = (newComponents: any[] | ((prev: any[]) => any[])) => {
@@ -28,7 +38,7 @@ export default function BuilderPage() {
     setFuture([]);
   };
 
-  const handleSelectComponent = (component: any) => {
+  const handleSelectComponent = (component: Component | null) => {
     setSelectedComponent(component)
   }
 
@@ -70,6 +80,10 @@ export default function BuilderPage() {
     setFuture(future.slice(1))
   }
 
+  const handleUpdateComponent = (id: string, newProps: any) => {
+    handleSetComponents(prev => prev.map(c => c.id === id ? { ...c, props: { ...c.props, ...newProps } } : c));
+  }
+
   return (
     <DndContext onDragEnd={handleDragEnd}>
       <div className="flex h-[calc(100vh-theme(spacing.24))] w-full gap-6">
@@ -84,7 +98,10 @@ export default function BuilderPage() {
           canUndo={history.length > 0}
           canRedo={future.length > 0}
         />
-        <PropertiesPanel selectedComponent={selectedComponent} />
+        <PropertiesPanel 
+          selectedComponent={selectedComponent} 
+          onUpdateComponent={handleUpdateComponent}
+        />
       </div>
     </DndContext>
   )
