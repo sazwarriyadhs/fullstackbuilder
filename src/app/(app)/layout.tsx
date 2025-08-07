@@ -22,6 +22,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import Image from "next/image"
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -35,8 +36,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <Sidebar>
         <SidebarHeader>
           <Link href="/builder" className="flex items-center gap-2 font-bold text-xl text-sidebar-primary">
-            <Palette />
-            <span className="group-data-[collapsible=icon]:hidden">DesignSync</span>
+            <Image src="/images/logo.png" alt="DesignSync Logo" width={150} height={30} className="group-data-[collapsible=icon]:hidden" />
+            <Palette className="hidden group-data-[collapsible=icon]:block" />
           </Link>
         </SidebarHeader>
         <SidebarContent>

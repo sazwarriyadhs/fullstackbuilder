@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -31,8 +32,7 @@ export default function RegisterForm() {
         <CardHeader>
             <div className="flex justify-center mb-4">
                 <Link href="/" className="flex items-center gap-2 font-bold text-xl text-primary">
-                    <Palette />
-                    <span>DesignSync Canvas</span>
+                    <Image src="/images/logo.png" alt="DesignSync Canvas Logo" width={180} height={40} />
                 </Link>
             </div>
           <CardTitle className="text-2xl">Sign Up</CardTitle>

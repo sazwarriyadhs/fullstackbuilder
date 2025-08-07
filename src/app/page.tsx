@@ -9,8 +9,7 @@ export default function LandingPage() {
     <div className="flex flex-col min-h-screen">
       <header className="container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 font-bold text-xl text-primary">
-          <Palette />
-          <span>DesignSync Canvas</span>
+          <Image src="/images/logo.png" alt="DesignSync Canvas Logo" width={180} height={40} />
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
           <Link href="#features" className="hover:text-primary transition-colors">Features</Link>
