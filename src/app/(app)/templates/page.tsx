@@ -7,42 +7,42 @@ export default function TemplatesPage() {
   const templates = [
     {
       title: "E-commerce Dashboard",
-      description: "A comprehensive dashboard for managing online sales, products, and customers.",
+      description: "Dashboard lengkap untuk manajemen produk, pesanan, dan pelanggan.",
       image: "https://placehold.co/600x400.png",
       aiHint: "dashboard analytics",
       url: "https://github.com/creativetimofficial/argon-dashboard"
     },
     {
       title: "SaaS Landing Page",
-      description: "A modern and clean landing page template for your software as a service.",
+      description: "Halaman landing bersih dan modern untuk produk SaaS.",
       image: "https://placehold.co/600x400.png",
       aiHint: "website landing",
       url: "https://github.com/cruip/tailwind-landing-page-template"
     },
     {
       title: "Project Management App",
-      description: "A template for a Kanban-style project management application.",
+      description: "Kanban board dan manajemen tugas.",
       image: "https://placehold.co/600x400.png",
       aiHint: "kanban board",
       url: "https://github.com/satansdeer/kanban-board"
     },
     {
       title: "Blog Layout",
-      description: "A classic and readable layout for a personal or company blog.",
+      description: "Layout blog sederhana dengan dukungan Markdown/MDX.",
       image: "https://placehold.co/600x400.png",
       aiHint: "minimalist blog",
       url: "https://github.com/vercel/next.js/tree/canary/examples/blog"
     },
     {
       title: "Social Media Profile",
-      description: "A profile page design suitable for a social networking application.",
+      description: "Halaman profil pengguna mirip media sosial.",
       image: "https://placehold.co/600x400.png",
       aiHint: "social profile",
       url: "https://github.com/pheralb/next-profile"
     },
     {
       title: "Portfolio Website",
-      description: "Showcase your work with this stylish and minimalist portfolio template.",
+      description: "Tampilkan karya dan portofolio pribadi.",
       image: "https://placehold.co/600x400.png",
       aiHint: "creative portfolio",
       url: "https://github.com/smakosh/portfolio-dev"
