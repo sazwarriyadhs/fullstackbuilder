@@ -39,11 +39,7 @@ const DraggableTool = ({ component }: {component: any}) => {
       )
 }
 
-interface BuilderToolsProps {
-  onAddComponent?: (component: any) => void; // Optional for compatibility, not used with dnd
-}
-
-export default function BuilderTools({ onAddComponent }: BuilderToolsProps) {
+export default function BuilderTools() {
   return (
     <Card className="w-64 hidden lg:block">
       <CardHeader>
