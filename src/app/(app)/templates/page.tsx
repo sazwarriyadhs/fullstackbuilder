@@ -21,9 +21,16 @@ interface Template {
   url: string;
 }
 
+interface EditingTemplate {
+  id: string;
+  title: string;
+  description: string;
+}
+
 export default function TemplatesPage() {
   const [templates, setTemplates] = useState<Template[]>([])
   const [loading, setLoading] = useState(true)
+  const [editingTemplate, setEditingTemplate] = useState<EditingTemplate | null>(null);
 
   useEffect(() => {
     fetch('/api/templates')
@@ -37,6 +44,27 @@ export default function TemplatesPage() {
         setLoading(false)
       })
   }, [])
+
+  const handleEditClick = (template: Template) => {
+    setEditingTemplate({ id: template.id, title: template.title, description: template.description });
+  };
+
+  const handleSaveChanges = () => {
+    if (editingTemplate) {
+      setTemplates(currentTemplates =>
+        currentTemplates.map(t =>
+          t.id === editingTemplate.id ? { ...t, title: editingTemplate.title, description: editingTemplate.description } : t
+        )
+      );
+      setEditingTemplate(null);
+    }
+  };
+
+  const handleInputChange = (field: 'title' | 'description', value: string) => {
+    if (editingTemplate) {
+      setEditingTemplate({ ...editingTemplate, [field]: value });
+    }
+  };
 
   return (
     <div className="space-y-8">
@@ -84,36 +112,48 @@ export default function TemplatesPage() {
                   <Button className="w-full" asChild>
                     <Link href="/builder">Use Template</Link>
                   </Button>
-                  <Dialog>
+                  <Dialog onOpenChange={(isOpen) => !isOpen && setEditingTemplate(null)}>
                     <DialogTrigger asChild>
-                      <Button variant="outline" size="icon">
+                      <Button variant="outline" size="icon" onClick={() => handleEditClick(template)}>
                         <Edit className="h-4 w-4" />
                         <span className="sr-only">Edit Template</span>
                       </Button>
                     </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Edit {template.title}</DialogTitle>
-                        <DialogDescription>Update your design settings below.</DialogDescription>
-                      </DialogHeader>
-                      <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="title" className="text-right">
-                            Title
-                          </Label>
-                          <Input id="title" defaultValue={template.title} className="col-span-3" />
+                    {editingTemplate && editingTemplate.id === template.id && (
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Edit {template.title}</DialogTitle>
+                          <DialogDescription>Update your design settings below.</DialogDescription>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-4">
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="title" className="text-right">
+                              Title
+                            </Label>
+                            <Input
+                              id="title"
+                              value={editingTemplate.title}
+                              onChange={(e) => handleInputChange('title', e.target.value)}
+                              className="col-span-3"
+                            />
+                          </div>
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="description" className="text-right">
+                              Description
+                            </Label>
+                            <Input
+                              id="description"
+                              value={editingTemplate.description}
+                              onChange={(e) => handleInputChange('description', e.target.value)}
+                              className="col-span-3"
+                            />
+                          </div>
                         </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="description" className="text-right">
-                            Description
-                          </Label>
-                          <Input id="description" defaultValue={template.description} className="col-span-3" />
-                        </div>
-                      </div>
-                      <DialogFooter>
-                        <Button type="submit">Save changes</Button>
-                      </DialogFooter>
-                    </DialogContent>
+                        <DialogFooter>
+                          <Button onClick={handleSaveChanges}>Save changes</Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    )}
                   </Dialog>
                 </CardFooter>
               </Card>
