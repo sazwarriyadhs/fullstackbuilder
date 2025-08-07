@@ -6,15 +6,87 @@ import { Input } from "@/components/ui/input"
 import Image from "next/image"
 import { Download } from "lucide-react"
 import { cn } from "@/lib/utils"
-
+import { DndContext, useDroppable, useDraggable, DragEndEvent } from '@dnd-kit/core';
+import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface BuilderCanvasProps {
     components: any[];
     onSelectComponent: (component: any) => void;
     selectedComponent: any;
+    setComponents: (components: any[]) => void;
 }
 
-export default function BuilderCanvas({ components, onSelectComponent, selectedComponent }: BuilderCanvasProps) {
+const SortableItem = ({ component, onSelectComponent, selectedComponent }: { component: any, onSelectComponent: (c: any) => void, selectedComponent: any }) => {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+      } = useSortable({id: component.id});
+      
+      const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+      };
+
+      const isSelected = selectedComponent?.id === component.id;
+
+    const renderComponent = (component: any) => {
+        const className = cn("cursor-grab active:cursor-grabbing", {
+            "ring-2 ring-primary ring-offset-2": isSelected,
+        });
+
+        switch(component.type) {
+            case 'heading':
+                return <h1 onClick={() => onSelectComponent(component)} className={cn("text-4xl font-bold", className)}>Heading</h1>
+            case 'text':
+                return <p onClick={() => onSelectComponent(component)} className={className}>Text block</p>
+            case 'button':
+                return <Button onClick={() => onSelectComponent(component)} className={className}>Click Me</Button>
+            case 'input':
+                return <Input onClick={() => onSelectComponent(component)} placeholder="Text Input" className={cn("w-48", className)} />
+            case 'card':
+                return (
+                    <UICard onClick={() => onSelectComponent(component)} className={cn("w-64", className)}>
+                        <CardHeader>
+                            <CardTitle>Card Title</CardTitle>
+                            <CardDescription>Card Description</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <p>Card content goes here.</p>
+                        </CardContent>
+                    </UICard>
+                )
+            case 'image':
+                 return (
+                    <div onClick={() => onSelectComponent(component)} className={cn("w-48 h-32 relative", className)}>
+                        <Image 
+                            src="https://placehold.co/300x200.png"
+                            alt="placeholder"
+                            fill
+                            className="bg-muted object-cover rounded-md"
+                            data-ai-hint="placeholder"
+                        />
+                    </div>
+                 )
+            default:
+                return null
+        }
+    }
+
+    return (
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+            {renderComponent(component)}
+        </div>
+    )
+}
+
+export default function BuilderCanvas({ components, onSelectComponent, selectedComponent, setComponents }: BuilderCanvasProps) {
+    const {setNodeRef} = useDroppable({
+        id: 'canvas',
+    });
 
     const handleExport = () => {
         const design = {
@@ -35,50 +107,6 @@ export default function BuilderCanvas({ components, onSelectComponent, selectedC
         link.click();
     };
 
-    const renderComponent = (component: any) => {
-        const isSelected = selectedComponent?.id === component.id;
-        const className = cn("cursor-pointer", {
-            "ring-2 ring-primary ring-offset-2": isSelected,
-        });
-
-        switch(component.type) {
-            case 'heading':
-                return <h1 key={component.id} onClick={() => onSelectComponent(component)} className={cn("text-4xl font-bold", className)}>Heading</h1>
-            case 'text':
-                return <p key={component.id} onClick={() => onSelectComponent(component)} className={className}>Text block</p>
-            case 'button':
-                return <Button key={component.id} onClick={() => onSelectComponent(component)} className={className}>Click Me</Button>
-            case 'input':
-                return <Input key={component.id} onClick={() => onSelectComponent(component)} placeholder="Text Input" className={cn("w-48", className)} />
-            case 'card':
-                return (
-                    <UICard key={component.id} onClick={() => onSelectComponent(component)} className={cn("w-64", className)}>
-                        <CardHeader>
-                            <CardTitle>Card Title</CardTitle>
-                            <CardDescription>Card Description</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <p>Card content goes here.</p>
-                        </CardContent>
-                    </UICard>
-                )
-            case 'image':
-                 return (
-                    <div key={component.id} onClick={() => onSelectComponent(component)} className={cn("w-48 h-32 relative", className)}>
-                        <Image 
-                            src="https://placehold.co/300x200.png"
-                            alt="placeholder"
-                            fill
-                            className="bg-muted object-cover rounded-md"
-                            data-ai-hint="placeholder"
-                        />
-                    </div>
-                 )
-            default:
-                return null
-        }
-    }
-
   return (
     <div className="flex-1 flex flex-col gap-4">
         <div className="flex items-center justify-between">
@@ -88,10 +116,14 @@ export default function BuilderCanvas({ components, onSelectComponent, selectedC
                 Export JSON
             </Button>
         </div>
-        <UICard className="flex-1 w-full grid-bg">
+        <UICard ref={setNodeRef} className="flex-1 w-full grid-bg">
             <div className="flex flex-wrap items-start justify-start p-4 gap-4 h-full">
                 {components.length > 0 ? (
-                   components.map((comp) => renderComponent(comp))
+                    <SortableContext items={components.map(c => c.id)} strategy={verticalListSortingStrategy}>
+                        {components.map((comp) => (
+                           <SortableItem key={comp.id} component={comp} onSelectComponent={onSelectComponent} selectedComponent={selectedComponent} />
+                        ))}
+                    </SortableContext>
                 ) : (
                     <div className="flex items-center justify-center h-full w-full">
                          <p className="text-muted-foreground text-lg">Drop components here</p>

@@ -2,6 +2,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Heading1, Type, MousePointerClick, RectangleHorizontal, Pilcrow, ImageIcon } from "lucide-react"
+import { useDraggable } from "@dnd-kit/core"
+import { cn } from "@/lib/utils"
 
 const components = [
   { name: "Heading", icon: Heading1, type: 'heading' },
@@ -12,8 +14,33 @@ const components = [
   { name: "Image", icon: ImageIcon, type: 'image' },
 ]
 
+const DraggableTool = ({ component }: {component: any}) => {
+    const {attributes, listeners, setNodeRef, isDragging} = useDraggable({
+        id: `tool-${component.type}`,
+        data: {
+          isTool: true,
+          component,
+        },
+      });
+
+      return (
+        <div 
+          ref={setNodeRef}
+          {...listeners}
+          {...attributes}
+          className={cn(
+            "flex items-center gap-3 p-2 rounded-md border hover:bg-muted cursor-grab",
+            { "opacity-50 cursor-grabbing": isDragging }
+          )}
+        >
+          <component.icon className="h-5 w-5 text-muted-foreground" />
+          <span className="text-sm">{component.name}</span>
+        </div>
+      )
+}
+
 interface BuilderToolsProps {
-  onAddComponent: (component: any) => void;
+  onAddComponent?: (component: any) => void; // Optional for compatibility, not used with dnd
 }
 
 export default function BuilderTools({ onAddComponent }: BuilderToolsProps) {
@@ -25,14 +52,7 @@ export default function BuilderTools({ onAddComponent }: BuilderToolsProps) {
       <CardContent>
         <div className="grid gap-2">
           {components.map((component) => (
-            <div 
-              key={component.name} 
-              className="flex items-center gap-3 p-2 rounded-md border hover:bg-muted cursor-grab active:cursor-grabbing"
-              onClick={() => onAddComponent(component)}
-            >
-              <component.icon className="h-5 w-5 text-muted-foreground" />
-              <span className="text-sm">{component.name}</span>
-            </div>
+            <DraggableTool key={component.name} component={component} />
           ))}
         </div>
       </CardContent>
