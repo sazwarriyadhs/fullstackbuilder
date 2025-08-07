@@ -41,7 +41,7 @@ export default function LandingPage() {
             <div className="absolute top-0 -right-4 w-72 h-72 bg-primary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
             <div className="absolute -bottom-8 left-20 w-72 h-72 bg-secondary rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
             <Image
-              src="https://placehold.co/1200x600.png"
+              src="/images/build.jpeg"
               alt="DesignSync Canvas UI Builder"
               data-ai-hint="ui builder"
               width={1200}
