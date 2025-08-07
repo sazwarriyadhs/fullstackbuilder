@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Heading1, Type, MousePointerClick, RectangleHorizontal, Pilcrow, ImageIcon } from "lucide-react"
 import { useDraggable } from "@dnd-kit/core"
 import { cn } from "@/lib/utils"
+import { useEffect, useState } from "react"
 
 const components = [
   { name: "Heading", icon: Heading1, type: 'heading' },
@@ -41,6 +42,16 @@ const DraggableTool = ({ component, onAddComponent }: {component: any, onAddComp
 }
 
 export default function BuilderTools({ onAddComponent }: { onAddComponent: (component: any) => void }) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
+  
   return (
     <Card className="w-64">
       <CardHeader>
