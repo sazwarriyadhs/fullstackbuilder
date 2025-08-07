@@ -5,7 +5,7 @@ import { Card as UICard, CardContent, CardHeader, CardTitle, CardDescription } f
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
-import { Undo2, Redo2, Save, FolderDown, Eye, Download, Upload, Star } from "lucide-react"
+import { Undo2, Redo2, Save, FolderDown, Eye, Download, Upload, Star, LocateFixed } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -240,6 +240,19 @@ const renderPreviewComponent = (component: Component) => {
                     ))}
                 </div>
             );
+        case 'map':
+            return (
+                <iframe
+                  width="300"
+                  height="200"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  allowFullScreen
+                  src={props.src || "https://www.openstreetmap.org/export/embed.html?bbox=-74.0059,40.7128,-73.9959,40.7228&layer=mapnik"}>
+                </iframe>
+            );
+        case 'gps':
+            return <Button variant="outline"><LocateFixed className="mr-2"/>{props.text || 'Dapatkan Lokasi'}</Button>;
         default:
             return <div className="p-2 border rounded-md bg-muted text-muted-foreground">Unknown Component: {component.type}</div>
     }

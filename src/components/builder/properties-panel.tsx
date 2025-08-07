@@ -37,7 +37,7 @@ interface PropertiesPanelProps {
 }
 
 const commonFields = [
-  { id: "text", label: "Text", forTypes: ["heading", "text", "button", "tooltip", "footer"] },
+  { id: "text", label: "Text", forTypes: ["heading", "text", "button", "tooltip", "footer", "gps"] },
   { id: "placeholder", label: "Placeholder", forTypes: ["input", "select"] },
 ]
 
@@ -114,6 +114,9 @@ const componentFields: Record<string, { id: string; label: string, type?: string
   ],
   rating: [
     { id: "stars", label: "Number of Stars", type: "slider" },
+  ],
+  map: [
+    { id: "src", label: "Embed URL" },
   ],
 }
 

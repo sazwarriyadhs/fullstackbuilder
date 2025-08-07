@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Heading1, Type, MousePointerClick, RectangleHorizontal, Pilcrow, ImageIcon, Youtube, Minus, Tabs, ChevronDownSquare, AppWindow, MessageCircle, CheckSquare, CircleDot, ChevronDown, SlidersHorizontal, PanelTop, PanelBottom, List, Star, GanttChartSquare, Calendar, TableIcon, FormInputIcon } from "lucide-react"
+import { Heading1, Type, MousePointerClick, RectangleHorizontal, Pilcrow, ImageIcon, Youtube, Minus, GalleryVertical, ChevronDownSquare, AppWindow, MessageCircle, CheckSquare, CircleDot, ChevronDown, SlidersHorizontal, PanelTop, PanelBottom, List, Star, GanttChartSquare, Calendar, TableIcon, FormInputIcon, Map, LocateFixed } from "lucide-react"
 import { useDraggable } from "@dnd-kit/core"
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react"
@@ -15,7 +15,7 @@ const components = [
   { name: "Image", icon: ImageIcon, type: 'image' },
   { name: "Video", icon: Youtube, type: 'video' },
   { name: "Divider", icon: Minus, type: 'divider' },
-  { name: "Tabs", icon: Tabs, type: 'tabs' },
+  { name: "Tabs", icon: GalleryVertical, type: 'tabs' },
   { name: "Accordion", icon: ChevronDownSquare, type: 'accordion' },
   { name: "Modal", icon: AppWindow, type: 'modal' },
   { name: "Tooltip", icon: MessageCircle, type: 'tooltip' },
@@ -31,6 +31,8 @@ const components = [
   { name: "Date Picker", icon: Calendar, type: 'datepicker' },
   { name: "Chart", icon: GanttChartSquare, type: 'chart' },
   { name: "Rating", icon: Star, type: 'rating' },
+  { name: "Map", icon: Map, type: 'map' },
+  { name: "GPS Location", icon: LocateFixed, type: 'gps' },
 ]
 
 const DraggableTool = ({ component, onAddComponent }: {component: any, onAddComponent: (component: any) => void}) => {
