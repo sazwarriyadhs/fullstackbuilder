@@ -1,13 +1,13 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { UICard } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Download, Eye, FolderDown, Redo2, Save, Undo2, Upload } from "lucide-react";
-import React, "useRef"
+import React, { useRef } from "react"
 import type { Component } from "@/app/(app)/builder/page";
 import { useToast } from "@/hooks/use-toast";
 import JSZip from 'jszip';
@@ -220,7 +220,7 @@ export default function BuilderCanvas({
                 </Button>
             </div>
         </div>
-        <UICard 
+        <Card
             ref={setNodeRef} 
             className="flex-1 w-full grid-bg overflow-auto" 
             onClick={() => onSelectComponent(null)}
@@ -240,7 +240,7 @@ export default function BuilderCanvas({
                     </div>
                 )}
             </div>
-        </UICard>
+        </Card>
       </div>
   )
 }
