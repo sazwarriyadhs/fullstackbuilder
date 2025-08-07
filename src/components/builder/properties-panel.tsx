@@ -28,7 +28,50 @@ const designSchema = `{
   }
 }`
 
-export default function PropertiesPanel() {
+interface PropertiesPanelProps {
+  selectedComponent: any;
+}
+
+export default function PropertiesPanel({ selectedComponent }: PropertiesPanelProps) {
+
+  const renderProperties = () => {
+    if (!selectedComponent) {
+      return (
+        <div className="flex items-center justify-center h-full">
+          <p className="text-muted-foreground">Select a component to edit</p>
+        </div>
+      )
+    }
+
+    return (
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-lg font-medium capitalize">{selectedComponent.type} Properties</h3>
+          <p className="text-sm text-muted-foreground">Selected: `{selectedComponent.name}`</p>
+        </div>
+        <div className="space-y-4">
+            <div className="space-y-2">
+                <Label htmlFor="text">Text</Label>
+                <Input id="text" defaultValue="Get Started"/>
+            </div>
+              <div className="space-y-2">
+                <Label htmlFor="color">Background Color</Label>
+                <Input id="color" defaultValue="#3F51B5"/>
+            </div>
+              <div className="space-y-2">
+                <Label htmlFor="padding">Padding</Label>
+                <Input id="padding" defaultValue="12px 24px"/>
+            </div>
+              <div className="space-y-2">
+                <Label htmlFor="border-radius">Border Radius</Label>
+                <Input id="border-radius" defaultValue="8px"/>
+            </div>
+        </div>
+      </div>
+    )
+  }
+
+
   return (
     <Card className="w-80 hidden md:block">
         <Tabs defaultValue="properties" className="w-full h-full flex flex-col">
@@ -37,30 +80,7 @@ export default function PropertiesPanel() {
             <TabsTrigger value="schema"><Code className="mr-2 h-4 w-4"/> Schema</TabsTrigger>
           </TabsList>
           <TabsContent value="properties" className="flex-1 overflow-y-auto p-4">
-             <div className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-medium">Button Properties</h3>
-                  <p className="text-sm text-muted-foreground">Selected: `primary-button`</p>
-                </div>
-                <div className="space-y-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="text">Text</Label>
-                        <Input id="text" defaultValue="Get Started"/>
-                    </div>
-                     <div className="space-y-2">
-                        <Label htmlFor="color">Background Color</Label>
-                        <Input id="color" defaultValue="#3F51B5"/>
-                    </div>
-                     <div className="space-y-2">
-                        <Label htmlFor="padding">Padding</Label>
-                        <Input id="padding" defaultValue="12px 24px"/>
-                    </div>
-                     <div className="space-y-2">
-                        <Label htmlFor="border-radius">Border Radius</Label>
-                        <Input id="border-radius" defaultValue="8px"/>
-                    </div>
-                </div>
-             </div>
+             {renderProperties()}
           </TabsContent>
           <TabsContent value="schema" className="flex-1 overflow-y-auto p-4 bg-muted/50 rounded-b-lg">
              <div className="space-y-4">

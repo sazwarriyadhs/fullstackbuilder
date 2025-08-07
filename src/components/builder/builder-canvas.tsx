@@ -1,25 +1,25 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Card as UICard, CardContent } from "@/components/ui/card"
+import { Card as UICard, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
 import { Download } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 
 interface BuilderCanvasProps {
     components: any[];
+    onSelectComponent: (component: any) => void;
+    selectedComponent: any;
 }
 
-export default function BuilderCanvas({ components }: BuilderCanvasProps) {
+export default function BuilderCanvas({ components, onSelectComponent, selectedComponent }: BuilderCanvasProps) {
 
     const handleExport = () => {
         const design = {
           name: 'Untitled Design',
-          components: [
-            { id: 'btn-1', type: 'button', text: 'Click me', styles: { padding: '10px', color: 'white' } },
-            { id: 'input-1', type: 'input', placeholder: 'Enter text', styles: { padding: '8px' } }
-          ],
+          components: components.map(({icon, ...rest}) => rest), // Remove icon before export
           schema: {
             "users": {
               "id": "INT PRIMARY KEY",
@@ -35,29 +35,44 @@ export default function BuilderCanvas({ components }: BuilderCanvasProps) {
         link.click();
     };
 
-    const renderComponent = (component: any, index: number) => {
+    const renderComponent = (component: any) => {
+        const isSelected = selectedComponent?.id === component.id;
+        const className = cn("cursor-pointer", {
+            "ring-2 ring-primary ring-offset-2": isSelected,
+        });
+
         switch(component.type) {
+            case 'heading':
+                return <h1 key={component.id} onClick={() => onSelectComponent(component)} className={cn("text-4xl font-bold", className)}>Heading</h1>
+            case 'text':
+                return <p key={component.id} onClick={() => onSelectComponent(component)} className={className}>Text block</p>
             case 'button':
-                return <Button key={index}>Click Me</Button>
+                return <Button key={component.id} onClick={() => onSelectComponent(component)} className={className}>Click Me</Button>
             case 'input':
-                return <Input key={index} placeholder="Text Input" />
+                return <Input key={component.id} onClick={() => onSelectComponent(component)} placeholder="Text Input" className={cn("w-48", className)} />
             case 'card':
                 return (
-                    <UICard key={index} className="w-48">
-                        <CardContent className="p-4">Card</CardContent>
+                    <UICard key={component.id} onClick={() => onSelectComponent(component)} className={cn("w-64", className)}>
+                        <CardHeader>
+                            <CardTitle>Card Title</CardTitle>
+                            <CardDescription>Card Description</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <p>Card content goes here.</p>
+                        </CardContent>
                     </UICard>
                 )
             case 'image':
                  return (
-                    <Image 
-                        key={index}
-                        src="https://placehold.co/100x100.png"
-                        alt="placeholder"
-                        width={100}
-                        height={100}
-                        className="bg-muted"
-                        data-ai-hint="placeholder"
-                    />
+                    <div key={component.id} onClick={() => onSelectComponent(component)} className={cn("w-48 h-32 relative", className)}>
+                        <Image 
+                            src="https://placehold.co/300x200.png"
+                            alt="placeholder"
+                            fill
+                            className="bg-muted object-cover rounded-md"
+                            data-ai-hint="placeholder"
+                        />
+                    </div>
                  )
             default:
                 return null
@@ -68,7 +83,7 @@ export default function BuilderCanvas({ components }: BuilderCanvasProps) {
     <div className="flex-1 flex flex-col gap-4">
         <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold font-headline">Untitled Design</h1>
-            <Button onClick={handleExport} variant="outline">
+            <Button onClick={handleExport} variant="outline" disabled={components.length === 0}>
                 <Download className="mr-2" />
                 Export JSON
             </Button>
@@ -76,7 +91,7 @@ export default function BuilderCanvas({ components }: BuilderCanvasProps) {
         <UICard className="flex-1 w-full grid-bg">
             <div className="flex flex-wrap items-start justify-start p-4 gap-4 h-full">
                 {components.length > 0 ? (
-                   components.map((comp, index) => renderComponent(comp, index))
+                   components.map((comp) => renderComponent(comp))
                 ) : (
                     <div className="flex items-center justify-center h-full w-full">
                          <p className="text-muted-foreground text-lg">Drop components here</p>
