@@ -7,11 +7,12 @@ import Image from "next/image"
 import { Download } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useDroppable } from '@dnd-kit/core';
-import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { SortableContext, useSortable, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 interface BuilderCanvasProps {
     components: any[];
+    setComponents: (components: any[]) => void;
     onSelectComponent: (component: any) => void;
     selectedComponent: any;
 }
@@ -82,7 +83,7 @@ const SortableItem = ({ component, onSelectComponent, selectedComponent }: { com
     )
 }
 
-export default function BuilderCanvas({ components, onSelectComponent, selectedComponent }: BuilderCanvasProps) {
+export default function BuilderCanvas({ components, setComponents, onSelectComponent, selectedComponent }: BuilderCanvasProps) {
     const {setNodeRef} = useDroppable({
         id: 'canvas',
     });

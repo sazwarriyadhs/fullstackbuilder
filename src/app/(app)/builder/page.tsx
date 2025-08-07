@@ -49,6 +49,7 @@ export default function BuilderPage() {
         <BuilderTools />
         <BuilderCanvas
           components={components}
+          setComponents={setComponents}
           onSelectComponent={handleSelectComponent}
           selectedComponent={selectedComponent}
         />
