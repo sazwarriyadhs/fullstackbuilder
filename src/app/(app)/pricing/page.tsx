@@ -57,7 +57,7 @@ const tiers = [
 
 const ewallets = [
     { name: 'GoPay', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Gopay_logo.svg/308px-Gopay_logo.svg.png?20210531070158', alt: 'GoPay Logo', hint: 'gopay logo' },
-    { name: 'OVO', logo: '/images/ovo.png', alt: 'OVO Logo', hint: 'ovo logo' },
+    { name: 'OVO', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Logo_ovo_purple.svg/1920px-Logo_ovo_purple.svg.png', alt: 'OVO Logo', hint: 'ovo logo' },
     { name: 'ShopeePay', logo: '/images/shopeepay.png', alt: 'ShopeePay Logo', hint: 'shopeepay logo' },
     { name: 'DANA', logo: '/images/dana.png', alt: 'DANA Logo', hint: 'dana logo' },
 ];
@@ -97,47 +97,50 @@ export default function PricingPage() {
               </ul>
             </CardContent>
             <CardFooter className="p-6 mt-auto">
-              <Button className="w-full" variant={tier.name === 'Pro' ? "default" : "outline"} disabled={tier.name === 'Pro'}>{tier.cta}</Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                   <Button className="w-full" variant={tier.name === 'Pro' ? "default" : "outline"} disabled={tier.name !== 'Pro'}>{tier.cta}</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Pembayaran Paket Pro</DialogTitle>
+                    <DialogDescription>
+                      Pilih metode pembayaran e-wallet Anda.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4">
+                    {ewallets.map((wallet) => (
+                      <Dialog key={wallet.name}>
+                        <DialogTrigger asChild>
+                          <button className="flex items-center justify-center p-4 bg-muted/50 rounded-lg transition-transform hover:scale-105">
+                            <Image src={wallet.logo} alt={wallet.alt} width={100} height={40} objectFit="contain" data-ai-hint={wallet.hint} />
+                          </button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Pembayaran dengan {wallet.name}</DialogTitle>
+                            <DialogDescription>Pindai kode QR di bawah untuk menyelesaikan pembayaran Anda.</DialogDescription>
+                          </DialogHeader>
+                          <div className="flex flex-col items-center gap-4 py-4">
+                            <Image src="/images/qris.png" alt="QR Code" width={250} height={250} className="rounded-lg" data-ai-hint="payment qris" />
+                            <div className="text-center">
+                              <p className="font-medium">087864530047</p>
+                              <p className="text-xs text-muted-foreground">a.n Azwar Riyadh Subarkah</p>
+                            </div>
+                          </div>
+                          <DialogFooter>
+                            <Button className="w-full">Konfirmasi Pembayaran</Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                    ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
             </CardFooter>
           </Card>
         ))}
       </div>
-
-       <Card className="mt-12">
-        <CardHeader>
-          <CardTitle>Pembayaran E-Wallet</CardTitle>
-          <CardDescription>Pilih e-wallet pilihan Anda untuk melakukan pembayaran.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {ewallets.map((wallet) => (
-              <Dialog key={wallet.name}>
-                <DialogTrigger asChild>
-                  <button className="flex items-center justify-center p-4 bg-muted/50 rounded-lg transition-transform hover:scale-105">
-                    <Image src={wallet.logo} alt={wallet.alt} width={100} height={40} objectFit="contain" data-ai-hint={wallet.hint} />
-                  </button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Pembayaran dengan {wallet.name}</DialogTitle>
-                    <DialogDescription>Pindai kode QR di bawah untuk menyelesaikan pembayaran Anda.</DialogDescription>
-                  </DialogHeader>
-                  <div className="flex flex-col items-center gap-4 py-4">
-                    <Image src="/images/qris.png" alt="QR Code" width={250} height={250} className="rounded-lg" data-ai-hint="payment qris" />
-                    <div className="text-center">
-                      <p className="font-medium">087864530047</p>
-                      <p className="text-xs text-muted-foreground">a.n Azwar Riyadh Subarkah</p>
-                    </div>
-                  </div>
-                  <DialogFooter>
-                    <Button className="w-full">Konfirmasi Pembayaran</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }
