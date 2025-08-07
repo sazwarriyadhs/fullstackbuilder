@@ -4,7 +4,7 @@
     "id": "ecommerce-dashboard",
     "title": "E-commerce Dashboard",
     "description": "Dashboard lengkap untuk manajemen produk dan penjualan.",
-    "image": "https://placehold.co/600x400.png",
+    "image": "/images/ecommerce-dashboard.png",
     "aiHint": "dashboard analytics",
     "url": "https://github.com/coreui/coreui-free-react-admin-template"
   },
@@ -12,7 +12,7 @@
     "id": "saas-landing",
     "title": "SaaS Landing Page",
     "description": "Landing page bersih dan modern untuk produk SaaS.",
-    "image": "https://placehold.co/600x400.png",
+    "image": "/images/saas-landing.png",
     "aiHint": "website landing",
     "url": "https://github.com/cruip/tailwind-landing-page-template"
   },
@@ -20,7 +20,7 @@
     "id": "project-management",
     "title": "Project Management App",
     "description": "Template Kanban-style untuk manajemen proyek.",
-    "image": "https://placehold.co/600x400.png",
+    "image": "/images/project-management.png",
     "aiHint": "kanban board",
     "url": "https://github.com/satansdeer/kanban-board"
   },
@@ -28,7 +28,7 @@
     "id": "blog-layout",
     "title": "Blog Layout",
     "description": "Layout blog sederhana dan elegan.",
-    "image": "https://placehold.co/600x400.png",
+    "image": "/images/blog-layout.png",
     "aiHint": "minimalist blog",
     "url": "https://github.com/vercel/next.js/tree/canary/examples/blog"
   },
@@ -36,7 +36,7 @@
     "id": "social-profile",
     "title": "Social Media Profile",
     "description": "Profil sosial untuk aplikasi media sosial.",
-    "image": "https://placehold.co/600x400.png",
+    "image": "/images/social-profile.png",
     "aiHint": "social profile",
     "url": "https://github.com/pheralb/next-profile"
   },
@@ -44,7 +44,7 @@
     "id": "portfolio",
     "title": "Portfolio Website",
     "description": "Portofolio pribadi untuk menampilkan karya kamu.",
-    "image": "https://placehold.co/600x400.png",
+    "image": "/images/portfolio.png",
     "aiHint": "creative portfolio",
     "url": "https://github.com/smakosh/portfolio-dev"
   }
