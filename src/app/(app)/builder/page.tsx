@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Download, MousePointerSquare, Type, RectangleHorizontal, Image as ImageIcon, Code, Eye } from "lucide-react"
+import { Download, MousePointerClick, Type, RectangleHorizontal, Image as ImageIcon, Code, Eye } from "lucide-react"
 
 export default function BuilderPage() {
 
@@ -32,7 +32,7 @@ export default function BuilderPage() {
   };
 
   const components = [
-    { name: "Button", icon: MousePointerSquare },
+    { name: "Button", icon: MousePointerClick },
     { name: "Input", icon: Type },
     { name: "Card", icon: RectangleHorizontal },
     { name: "Image", icon: ImageIcon },
