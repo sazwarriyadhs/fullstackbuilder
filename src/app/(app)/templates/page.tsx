@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Image from "next/image"
+import Link from "next/link"
 
 export default function TemplatesPage() {
   const templates = [
@@ -8,37 +9,43 @@ export default function TemplatesPage() {
       title: "E-commerce Dashboard",
       description: "A comprehensive dashboard for managing online sales, products, and customers.",
       image: "https://placehold.co/600x400.png",
-      aiHint: "dashboard analytics"
+      aiHint: "dashboard analytics",
+      url: "https://github.com/creativetimofficial/argon-dashboard"
     },
     {
       title: "SaaS Landing Page",
       description: "A modern and clean landing page template for your software as a service.",
       image: "https://placehold.co/600x400.png",
-      aiHint: "website landing"
+      aiHint: "website landing",
+      url: "https://github.com/cruip/tailwind-landing-page-template"
     },
     {
       title: "Project Management App",
       description: "A template for a Kanban-style project management application.",
       image: "https://placehold.co/600x400.png",
-      aiHint: "kanban board"
+      aiHint: "kanban board",
+      url: "https://github.com/satansdeer/kanban-board"
     },
     {
       title: "Blog Layout",
       description: "A classic and readable layout for a personal or company blog.",
       image: "https://placehold.co/600x400.png",
-      aiHint: "minimalist blog"
+      aiHint: "minimalist blog",
+      url: "https://github.com/vercel/next.js/tree/canary/examples/blog"
     },
     {
       title: "Social Media Profile",
       description: "A profile page design suitable for a social networking application.",
       image: "https://placehold.co/600x400.png",
-      aiHint: "social profile"
+      aiHint: "social profile",
+      url: "https://github.com/pheralb/next-profile"
     },
     {
       title: "Portfolio Website",
       description: "Showcase your work with this stylish and minimalist portfolio template.",
       image: "https://placehold.co/600x400.png",
-      aiHint: "creative portfolio"
+      aiHint: "creative portfolio",
+      url: "https://github.com/smakosh/portfolio-dev"
     },
   ]
 
@@ -70,7 +77,9 @@ export default function TemplatesPage() {
               <CardDescription className="mt-2">{template.description}</CardDescription>
             </CardContent>
             <CardFooter>
-              <Button className="w-full">Use Template</Button>
+              <Button className="w-full" asChild>
+                <Link href={template.url} target="_blank" rel="noopener noreferrer">Use Template</Link>
+              </Button>
             </CardFooter>
           </Card>
         ))}
