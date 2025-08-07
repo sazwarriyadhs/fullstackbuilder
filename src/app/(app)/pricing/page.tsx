@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check } from "lucide-react";
+import Image from "next/image";
 
 const tiers = [
   {
@@ -19,8 +20,8 @@ const tiers = [
   },
   {
     name: "Pro",
-    price: "$25",
-    frequency: "/month",
+    price: "Rp 25.000",
+    frequency: "/bulan",
     description: "For professionals and small teams.",
     features: [
       "All features in Free",
@@ -33,7 +34,7 @@ const tiers = [
       "Advanced Security & SSO",
       "Custom Integrations",
     ],
-    cta: "Current Plan",
+    cta: "Get Started",
     popular: true,
   },
   {
@@ -51,6 +52,13 @@ const tiers = [
     cta: "Contact Sales",
     popular: false,
   },
+];
+
+const ewallets = [
+    { name: 'GoPay', logo: '/images/gopay.png', alt: 'GoPay Logo', hint: 'gopay logo' },
+    { name: 'OVO', logo: '/images/ovo.png', alt: 'OVO Logo', hint: 'ovo logo' },
+    { name: 'ShopeePay', logo: '/images/shopeepay.png', alt: 'ShopeePay Logo', hint: 'shopeepay logo' },
+    { name: 'DANA', logo: '/images/dana.png', alt: 'DANA Logo', hint: 'dana logo' },
 ];
 
 export default function PricingPage() {
@@ -88,11 +96,35 @@ export default function PricingPage() {
               </ul>
             </CardContent>
             <CardFooter className="p-6 mt-auto">
-              <Button className="w-full" variant={tier.popular ? "default" : "outline"} disabled={tier.popular}>{tier.cta}</Button>
+              <Button className="w-full" variant={tier.name === 'Pro' ? "default" : "outline"} disabled={tier.name === 'Pro'}>{tier.cta}</Button>
             </CardFooter>
           </Card>
         ))}
       </div>
+
+       <Card className="mt-12">
+        <CardHeader>
+          <CardTitle>Pembayaran E-Wallet</CardTitle>
+          <CardDescription>Pindai kode QR untuk melakukan pembayaran dengan e-wallet pilihan Anda.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col md:flex-row items-center gap-8">
+            <div className="flex-shrink-0">
+                <Image src="/images/qris.png" alt="QR Code" width={200} height={200} className="rounded-lg" data-ai-hint="payment qris" />
+                <p className="text-center mt-2 text-sm font-medium">087864530047</p>
+                <p className="text-center text-xs text-muted-foreground">a.n Azwar Riyadh Subarkah</p>
+            </div>
+          <div className="flex-1">
+            <p className="mb-4 text-muted-foreground">Kami menerima pembayaran melalui:</p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {ewallets.map((wallet) => (
+                <div key={wallet.name} className="flex items-center justify-center p-4 bg-muted/50 rounded-lg">
+                  <Image src={wallet.logo} alt={wallet.alt} width={80} height={25} objectFit="contain" data-ai-hint={wallet.hint} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
