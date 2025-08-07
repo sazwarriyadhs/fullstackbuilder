@@ -28,8 +28,12 @@ const tiers = [
       "Design Download/Export",
       "Priority Support",
       "Team Collaboration (up to 5 users)",
+      "Unlimited Users",
+      "Dedicated Support & Onboarding",
+      "Advanced Security & SSO",
+      "Custom Integrations",
     ],
-    cta: "Upgrade to Pro",
+    cta: "Current Plan",
     popular: true,
   },
   {
@@ -84,7 +88,7 @@ export default function PricingPage() {
               </ul>
             </CardContent>
             <CardFooter className="p-6 mt-auto">
-              <Button className="w-full" variant={tier.popular ? "default" : "outline"}>{tier.cta}</Button>
+              <Button className="w-full" variant={tier.popular ? "default" : "outline"} disabled={tier.popular}>{tier.cta}</Button>
             </CardFooter>
           </Card>
         ))}
