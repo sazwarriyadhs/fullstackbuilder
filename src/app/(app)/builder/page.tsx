@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import { DndContext, DragEndEvent } from "@dnd-kit/core"
 import { arrayMove } from "@dnd-kit/sortable"
 
@@ -17,10 +18,28 @@ export type Component = {
 
 
 export default function BuilderPage() {
+  const searchParams = useSearchParams()
   const [components, setComponents] = useState<Component[]>([])
+  const [designTitle, setDesignTitle] = useState("Untitled Design")
   const [history, setHistory] = useState<any[][]>([])
   const [future, setFuture] = useState<any[][]>([])
   const [selectedComponent, setSelectedComponent] = useState<Component | null>(null)
+
+  useEffect(() => {
+    const templateData = searchParams.get('template');
+    if (templateData) {
+      try {
+        const parsedTemplate = JSON.parse(decodeURIComponent(templateData));
+        if (parsedTemplate.title) {
+          setDesignTitle(parsedTemplate.title);
+        }
+        // Di masa depan, ini juga akan memuat komponen template
+        // setComponents(parsedTemplate.components || []);
+      } catch (error) {
+        console.error("Gagal mem-parsing data template:", error);
+      }
+    }
+  }, [searchParams]);
 
   const handleAddComponent = (component: any) => {
     const newComponent = { ...component, id: `${component.type}-${Date.now()}` }
@@ -97,6 +116,7 @@ export default function BuilderPage() {
           onRedo={handleRedo}
           canUndo={history.length > 0}
           canRedo={future.length > 0}
+          designTitle={designTitle}
         />
         <PropertiesPanel 
           selectedComponent={selectedComponent} 

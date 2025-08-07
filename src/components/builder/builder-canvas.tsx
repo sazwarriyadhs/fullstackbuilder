@@ -22,6 +22,7 @@ interface BuilderCanvasProps {
     onRedo: () => void;
     canUndo: boolean;
     canRedo: boolean;
+    designTitle: string;
 }
 
 const renderPreviewComponent = (component: Component) => {
@@ -30,20 +31,20 @@ const renderPreviewComponent = (component: Component) => {
         case 'heading':
             return <h1 className="text-4xl font-bold">{props.text || 'Heading'}</h1>
         case 'text':
-            return <p>{props.text || 'Text block'}</p>
+            return <p>{props.text || 'Blok teks'}</p>
         case 'button':
-            return <Button>{props.text || 'Click Me'}</Button>
+            return <Button>{props.text || 'Klik Saya'}</Button>
         case 'input':
-            return <Input placeholder={props.placeholder || "Text Input"} className="w-48" />
+            return <Input placeholder={props.placeholder || "Input teks"} className="w-48" />
         case 'card':
             return (
                 <UICard className="w-64">
                     <CardHeader>
-                        <CardTitle>{props.title || 'Card Title'}</CardTitle>
-                        <CardDescription>{props.description || 'Card Description'}</CardDescription>
+                        <CardTitle>{props.title || 'Judul Kartu'}</CardTitle>
+                        <CardDescription>{props.description || 'Deskripsi Kartu'}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <p>{props.content || 'Card content goes here.'}</p>
+                        <p>{props.content || 'Konten kartu ada di sini.'}</p>
                     </CardContent>
                 </UICard>
             )
@@ -92,20 +93,20 @@ const SortableItem = ({ component, onSelectComponent, selectedComponent }: { com
             case 'heading':
                 return <h1 onClick={() => onSelectComponent(component)} className={cn("text-4xl font-bold", className)}>{props.text || 'Heading'}</h1>
             case 'text':
-                return <p onClick={() => onSelectComponent(component)} className={className}>{props.text || 'Text block'}</p>
+                return <p onClick={() => onSelectComponent(component)} className={className}>{props.text || 'Blok teks'}</p>
             case 'button':
-                return <Button onClick={() => onSelectComponent(component)} className={className}>{props.text || 'Click Me'}</Button>
+                return <Button onClick={() => onSelectComponent(component)} className={className}>{props.text || 'Klik Saya'}</Button>
             case 'input':
-                return <Input onClick={() => onSelectComponent(component)} placeholder={props.placeholder || "Text Input"} className={cn("w-48", className)} />
+                return <Input onClick={() => onSelectComponent(component)} placeholder={props.placeholder || "Input teks"} className={cn("w-48", className)} />
             case 'card':
                 return (
                     <UICard onClick={() => onSelectComponent(component)} className={cn("w-64", className)}>
                         <CardHeader>
-                            <CardTitle>{props.title || 'Card Title'}</CardTitle>
-                            <CardDescription>{props.description || 'Card Description'}</CardDescription>
+                            <CardTitle>{props.title || 'Judul Kartu'}</CardTitle>
+                            <CardDescription>{props.description || 'Deskripsi Kartu'}</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <p>{props.content || 'Card content goes here.'}</p>
+                            <p>{props.content || 'Konten kartu ada di sini.'}</p>
                         </CardContent>
                     </UICard>
                 )
@@ -141,7 +142,8 @@ export default function BuilderCanvas({
     onUndo,
     onRedo,
     canUndo,
-    canRedo
+    canRedo,
+    designTitle
 }: BuilderCanvasProps) {
     const {setNodeRef} = useDroppable({
         id: 'canvas',
@@ -162,26 +164,26 @@ export default function BuilderCanvas({
   return (
     <div className="flex-1 flex flex-col gap-4">
         <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold font-headline">Untitled Design</h1>
+            <h1 className="text-2xl font-bold font-headline">{designTitle}</h1>
             <div className="flex items-center gap-2">
                 <Button onClick={onUndo} variant="outline" size="icon" disabled={!canUndo}>
                     <Undo2 />
-                    <span className="sr-only">Undo</span>
+                    <span className="sr-only">Urungkan</span>
                 </Button>
                 <Button onClick={onRedo} variant="outline" size="icon" disabled={!canRedo}>
                     <Redo2 />
-                    <span className="sr-only">Redo</span>
+                    <span className="sr-only">Ulangi</span>
                 </Button>
                  <Dialog>
                     <DialogTrigger asChild>
                         <Button variant="outline">
                             <Eye className="mr-2" />
-                             Preview
+                             Pratinjau
                         </Button>
                     </DialogTrigger>
                     <DialogContent className="max-w-4xl h-[80vh]">
                         <DialogHeader>
-                            <DialogTitle>Design Preview</DialogTitle>
+                            <DialogTitle>Pratinjau Desain</DialogTitle>
                         </DialogHeader>
                         <div className="border rounded-md p-4 space-y-4 h-full overflow-auto">
                            {components.map(component => (
@@ -194,11 +196,11 @@ export default function BuilderCanvas({
                 </Dialog>
                 <Button onClick={handleSave} variant="outline">
                     <Save className="mr-2" />
-                    Save
+                    Simpan
                 </Button>
                  <Button onClick={handleLoad} variant="outline">
                     <FolderDown className="mr-2" />
-                    Load
+                    Muat
                 </Button>
             </div>
         </div>
@@ -212,7 +214,7 @@ export default function BuilderCanvas({
                     </SortableContext>
                 ) : (
                     <div className="flex items-center justify-center h-full w-full">
-                         <p className="text-muted-foreground text-lg">Drop components here</p>
+                         <p className="text-muted-foreground text-lg">Letakkan komponen di sini</p>
                     </div>
                 )}
             </div>

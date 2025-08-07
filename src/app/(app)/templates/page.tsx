@@ -40,7 +40,7 @@ export default function TemplatesPage() {
         setLoading(false)
       })
       .catch((error) => {
-        console.error("Failed to fetch templates:", error)
+        console.error("Gagal mengambil template:", error)
         setLoading(false)
       })
   }, [])
@@ -65,13 +65,22 @@ export default function TemplatesPage() {
       setEditingTemplate({ ...editingTemplate, [field]: value });
     }
   };
+  
+  const createBuilderLink = (template: Template) => {
+    const templateData = {
+      id: template.id,
+      title: template.title,
+    };
+    const serializedData = encodeURIComponent(JSON.stringify(templateData));
+    return `/builder?template=${serializedData}`;
+  };
 
   return (
     <div className="space-y-8">
       <div className="text-left">
-        <h1 className="text-3xl font-bold font-headline tracking-tight">Template Gallery</h1>
+        <h1 className="text-3xl font-bold font-headline tracking-tight">Galeri Template</h1>
         <p className="text-muted-foreground mt-2">
-          Choose a template to get started with your new design.
+          Pilih template untuk memulai desain baru Anda.
         </p>
       </div>
 
@@ -110,7 +119,7 @@ export default function TemplatesPage() {
                 </CardContent>
                 <CardFooter className="gap-2">
                   <Button className="w-full" asChild>
-                    <Link href="/builder">Use Template</Link>
+                    <Link href={createBuilderLink(template)}>Gunakan Template</Link>
                   </Button>
                   <Dialog onOpenChange={(isOpen) => !isOpen && setEditingTemplate(null)}>
                     <DialogTrigger asChild>
@@ -123,12 +132,12 @@ export default function TemplatesPage() {
                       <DialogContent>
                         <DialogHeader>
                           <DialogTitle>Edit {template.title}</DialogTitle>
-                          <DialogDescription>Update your design settings below.</DialogDescription>
+                          <DialogDescription>Perbarui pengaturan desain Anda di bawah ini.</DialogDescription>
                         </DialogHeader>
                         <div className="grid gap-4 py-4">
                           <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="title" className="text-right">
-                              Title
+                              Judul
                             </Label>
                             <Input
                               id="title"
@@ -139,7 +148,7 @@ export default function TemplatesPage() {
                           </div>
                           <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="description" className="text-right">
-                              Description
+                              Deskripsi
                             </Label>
                             <Input
                               id="description"
@@ -150,7 +159,7 @@ export default function TemplatesPage() {
                           </div>
                         </div>
                         <DialogFooter>
-                          <Button onClick={handleSaveChanges}>Save changes</Button>
+                          <Button onClick={handleSaveChanges}>Simpan perubahan</Button>
                         </DialogFooter>
                       </DialogContent>
                     )}
