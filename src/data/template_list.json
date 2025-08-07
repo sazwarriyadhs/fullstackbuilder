@@ -4,7 +4,7 @@
     "id": "ecommerce-dashboard",
     "title": "E-commerce Dashboard",
     "description": "Dashboard lengkap untuk manajemen produk dan penjualan.",
-    "image": "/images/template1.jpeg",
+    "image": "/images/ecommerce.jpg",
     "aiHint": "dashboard analytics",
     "url": "https://github.com/coreui/coreui-free-react-admin-template"
   },
@@ -12,7 +12,7 @@
     "id": "saas-landing",
     "title": "SaaS Landing Page",
     "description": "Landing page bersih dan modern untuk produk SaaS.",
-    "image": "/images/template2.jpeg",
+    "image": "/images/saas.jpeg",
     "aiHint": "website landing",
     "url": "https://github.com/cruip/tailwind-landing-page-template"
   },
@@ -20,7 +20,7 @@
     "id": "project-management",
     "title": "Project Management App",
     "description": "Template Kanban-style untuk manajemen proyek.",
-    "image": "/images/template3.jpeg",
+    "image": "/images/project.jpeg",
     "aiHint": "kanban board",
     "url": "https://github.com/satansdeer/kanban-board"
   },
@@ -28,7 +28,7 @@
     "id": "blog-layout",
     "title": "Blog Layout",
     "description": "Layout blog sederhana dan elegan.",
-    "image": "/images/template4.jpeg",
+    "image": "/images/blog.jpeg",
     "aiHint": "minimalist blog",
     "url": "https://github.com/vercel/next.js/tree/canary/examples/blog"
   },
@@ -36,7 +36,7 @@
     "id": "social-profile",
     "title": "Social Media Profile",
     "description": "Profil sosial untuk aplikasi media sosial.",
-    "image": "/images/template5.jpeg",
+    "image": "/images/socialprofile.jpeg",
     "aiHint": "social profile",
     "url": "https://github.com/pheralb/next-profile"
   },
@@ -44,7 +44,7 @@
     "id": "portfolio",
     "title": "Portfolio Website",
     "description": "Portofolio pribadi untuk menampilkan karya kamu.",
-    "image": "/images/template6.jpeg",
+    "image": "/images/portofolio.jpeg",
     "aiHint": "creative portfolio",
     "url": "https://github.com/smakosh/portfolio-dev"
   }
