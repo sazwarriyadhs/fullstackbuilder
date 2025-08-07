@@ -1,10 +1,12 @@
 "use client"
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card as UICard, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
-import { Download, Undo2, Redo2, Save, FolderDown } from "lucide-react"
+import { Undo2, Redo2, Save, FolderDown, Eye } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -21,6 +23,47 @@ interface BuilderCanvasProps {
     canUndo: boolean;
     canRedo: boolean;
 }
+
+const renderPreviewComponent = (component: Component) => {
+    const props = component.props || {};
+    switch(component.type) {
+        case 'heading':
+            return <h1 className="text-4xl font-bold">{props.text || 'Heading'}</h1>
+        case 'text':
+            return <p>{props.text || 'Text block'}</p>
+        case 'button':
+            return <Button>{props.text || 'Click Me'}</Button>
+        case 'input':
+            return <Input placeholder={props.placeholder || "Text Input"} className="w-48" />
+        case 'card':
+            return (
+                <UICard className="w-64">
+                    <CardHeader>
+                        <CardTitle>{props.title || 'Card Title'}</CardTitle>
+                        <CardDescription>{props.description || 'Card Description'}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <p>{props.content || 'Card content goes here.'}</p>
+                    </CardContent>
+                </UICard>
+            )
+        case 'image':
+             return (
+                <div className="w-48 h-32 relative">
+                    <Image 
+                        src={props.src || "https://placehold.co/300x200.png"}
+                        alt={props.alt || "placeholder"}
+                        fill
+                        className="bg-muted object-cover rounded-md"
+                        data-ai-hint={props.aiHint || "placeholder"}
+                    />
+                </div>
+             )
+        default:
+            return null
+    }
+}
+
 
 const SortableItem = ({ component, onSelectComponent, selectedComponent }: { component: Component, onSelectComponent: (c: Component) => void, selectedComponent: Component | null }) => {
     const {
@@ -129,6 +172,26 @@ export default function BuilderCanvas({
                     <Redo2 />
                     <span className="sr-only">Redo</span>
                 </Button>
+                 <Dialog>
+                    <DialogTrigger asChild>
+                        <Button variant="outline">
+                            <Eye className="mr-2" />
+                             Preview
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-4xl h-[80vh]">
+                        <DialogHeader>
+                            <DialogTitle>Design Preview</DialogTitle>
+                        </DialogHeader>
+                        <div className="border rounded-md p-4 space-y-4 h-full overflow-auto">
+                           {components.map(component => (
+                             <div key={component.id}>
+                               {renderPreviewComponent(component)}
+                             </div>
+                           ))}
+                        </div>
+                    </DialogContent>
+                </Dialog>
                 <Button onClick={handleSave} variant="outline">
                     <Save className="mr-2" />
                     Save
