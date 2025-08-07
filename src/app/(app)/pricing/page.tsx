@@ -58,7 +58,7 @@ const tiers = [
 const ewallets = [
     { name: 'GoPay', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Gopay_logo.svg/308px-Gopay_logo.svg.png?20210531070158', alt: 'GoPay Logo', hint: 'gopay logo' },
     { name: 'OVO', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Logo_ovo_purple.svg/1920px-Logo_ovo_purple.svg.png', alt: 'OVO Logo', hint: 'ovo logo' },
-    { name: 'ShopeePay', logo: 'https://images.seeklogo.com/logo-png/40/1/shopee-pay-logo-png_seeklogo-406839.png', alt: 'ShopeePay Logo', hint: 'shopeepay logo' },
+    { name: 'ShopeePay', logo: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjdnDdBqILuWW0ZrKVSmb6b0geMqz04nbVGEjMGVkUaTtT085faQTXAk3PdFDl7Nkd462NIeWFokuwg9xQ_mYKXHp6IXGb7jROTrQX26bbrL8M_aFRWZV3bRDJKmEqTFuqRua6MqWHJinE/s320-rw/ShopeePay+Logo+-+Free+Vector+Download+PNG.webp', alt: 'ShopeePay Logo', hint: 'shopeepay logo' },
     { name: 'DANA', logo: 'https://images.seeklogo.com/logo-png/39/1/dana-e-wallet-app-logo-png_seeklogo-399948.png', alt: 'DANA Logo', hint: 'dana logo' },
 ];
 
