@@ -82,7 +82,7 @@ export default function TemplatesPage() {
                 </CardContent>
                 <CardFooter className="gap-2">
                   <Button className="w-full" asChild>
-                    <Link href={template.url} target="_blank" rel="noopener noreferrer">Use Template</Link>
+                    <Link href="/builder">Use Template</Link>
                   </Button>
                   <Dialog>
                     <DialogTrigger asChild>
