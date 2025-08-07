@@ -4,17 +4,21 @@ import { Button } from "@/components/ui/button"
 import { Card as UICard, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
-import { Download } from "lucide-react"
+import { Download, Undo2, Redo2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useDroppable } from '@dnd-kit/core';
-import { SortableContext, useSortable, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
+import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 interface BuilderCanvasProps {
     components: any[];
-    setComponents: (components: any[]) => void;
+    setComponents: (components: any[] | ((prev: any[]) => any[])) => void;
     onSelectComponent: (component: any) => void;
     selectedComponent: any;
+    onUndo: () => void;
+    onRedo: () => void;
+    canUndo: boolean;
+    canRedo: boolean;
 }
 
 const SortableItem = ({ component, onSelectComponent, selectedComponent }: { component: any, onSelectComponent: (c: any) => void, selectedComponent: any }) => {
@@ -83,7 +87,16 @@ const SortableItem = ({ component, onSelectComponent, selectedComponent }: { com
     )
 }
 
-export default function BuilderCanvas({ components, setComponents, onSelectComponent, selectedComponent }: BuilderCanvasProps) {
+export default function BuilderCanvas({ 
+    components, 
+    setComponents, 
+    onSelectComponent, 
+    selectedComponent,
+    onUndo,
+    onRedo,
+    canUndo,
+    canRedo
+}: BuilderCanvasProps) {
     const {setNodeRef} = useDroppable({
         id: 'canvas',
     });
@@ -111,10 +124,20 @@ export default function BuilderCanvas({ components, setComponents, onSelectCompo
     <div className="flex-1 flex flex-col gap-4">
         <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold font-headline">Untitled Design</h1>
-            <Button onClick={handleExport} variant="outline" disabled={components.length === 0}>
-                <Download className="mr-2" />
-                Export JSON
-            </Button>
+            <div className="flex items-center gap-2">
+                <Button onClick={onUndo} variant="outline" size="icon" disabled={!canUndo}>
+                    <Undo2 />
+                    <span className="sr-only">Undo</span>
+                </Button>
+                <Button onClick={onRedo} variant="outline" size="icon" disabled={!canRedo}>
+                    <Redo2 />
+                    <span className="sr-only">Redo</span>
+                </Button>
+                <Button onClick={handleExport} variant="outline" disabled={components.length === 0}>
+                    <Download className="mr-2" />
+                    Export JSON
+                </Button>
+            </div>
         </div>
         <UICard ref={setNodeRef} className="flex-1 w-full grid-bg">
             <div className="flex flex-wrap items-start justify-start p-4 gap-4 h-full">
