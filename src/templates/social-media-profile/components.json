@@ -1,0 +1,21 @@
+
+{
+    "components": [
+        {
+            "id": "image-1",
+            "type": "image",
+            "props": {
+                "src": "https://placehold.co/150x150.png",
+                "alt": "profile picture",
+                "aiHint": "profile picture"
+            }
+        },
+        {
+            "id": "heading-1",
+            "type": "heading",
+            "props": {
+                "text": "User Name"
+            }
+        }
+    ]
+}

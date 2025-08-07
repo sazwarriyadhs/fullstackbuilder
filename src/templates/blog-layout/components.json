@@ -1,0 +1,19 @@
+
+{
+    "components": [
+        {
+            "id": "heading-1",
+            "type": "heading",
+            "props": {
+                "text": "My Awesome Blog"
+            }
+        },
+        {
+            "id": "text-1",
+            "type": "text",
+            "props": {
+                "text": "This is the first blog post. Welcome!"
+            }
+        }
+    ]
+}

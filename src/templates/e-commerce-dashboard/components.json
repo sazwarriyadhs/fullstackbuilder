@@ -1,0 +1,21 @@
+
+{
+    "components": [
+        {
+            "id": "heading-1",
+            "type": "heading",
+            "props": {
+                "text": "E-commerce Dashboard"
+            }
+        },
+        {
+            "id": "card-1",
+            "type": "card",
+            "props": {
+                "title": "Total Sales",
+                "description": "Last 30 days",
+                "content": "$12,345"
+            }
+        }
+    ]
+}

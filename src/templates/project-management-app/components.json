@@ -1,0 +1,21 @@
+
+{
+    "components": [
+         {
+            "id": "heading-1",
+            "type": "heading",
+            "props": {
+                "text": "Project Management"
+            }
+        },
+        {
+            "id": "card-1",
+            "type": "card",
+            "props": {
+                "title": "To Do",
+                "description": "Tasks to be done",
+                "content": "- Design landing page\n- Implement auth"
+            }
+        }
+    ]
+}

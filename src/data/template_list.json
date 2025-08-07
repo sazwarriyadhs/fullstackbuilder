@@ -1,51 +1,45 @@
 
 [
   {
-    "id": "ecommerce-dashboard",
+    "id": "e-commerce-dashboard",
     "title": "E-commerce Dashboard",
     "description": "Dashboard lengkap untuk manajemen produk dan penjualan.",
     "image": "/images/ecommerce.jpg",
-    "aiHint": "dashboard analytics",
-    "url": "https://github.com/coreui/coreui-free-react-admin-template"
+    "aiHint": "dashboard analytics"
   },
   {
-    "id": "saas-landing",
+    "id": "saas-landing-page",
     "title": "SaaS Landing Page",
     "description": "Landing page bersih dan modern untuk produk SaaS.",
     "image": "/images/saas.jpeg",
-    "aiHint": "website landing",
-    "url": "https://github.com/cruip/tailwind-landing-page-template"
+    "aiHint": "website landing"
   },
   {
-    "id": "project-management",
+    "id": "project-management-app",
     "title": "Project Management App",
     "description": "Template Kanban-style untuk manajemen proyek.",
     "image": "/images/project.jpeg",
-    "aiHint": "kanban board",
-    "url": "https://github.com/satansdeer/kanban-board"
+    "aiHint": "kanban board"
   },
   {
     "id": "blog-layout",
     "title": "Blog Layout",
     "description": "Layout blog sederhana dan elegan.",
     "image": "/images/blog.jpeg",
-    "aiHint": "minimalist blog",
-    "url": "https://github.com/vercel/next.js/tree/canary/examples/blog"
+    "aiHint": "minimalist blog"
   },
   {
-    "id": "social-profile",
+    "id": "social-media-profile",
     "title": "Social Media Profile",
     "description": "Profil sosial untuk aplikasi media sosial.",
     "image": "/images/socialprofile.jpeg",
-    "aiHint": "social profile",
-    "url": "https://github.com/pheralb/next-profile"
+    "aiHint": "social profile"
   },
   {
-    "id": "portfolio",
+    "id": "portfolio-website",
     "title": "Portfolio Website",
     "description": "Portofolio pribadi untuk menampilkan karya kamu.",
     "image": "/images/portofolio.jpeg",
-    "aiHint": "creative portfolio",
-    "url": "https://github.com/smakosh/portfolio-dev"
+    "aiHint": "creative portfolio"
   }
 ]

@@ -33,8 +33,16 @@ export default function BuilderPage() {
         if (parsedTemplate.title) {
           setDesignTitle(parsedTemplate.title);
         }
-        // Di masa depan, ini juga akan memuat komponen template
-        // setComponents(parsedTemplate.components || []);
+        if (parsedTemplate.id) {
+          fetch(`/api/templates?id=${parsedTemplate.id}`)
+            .then(res => res.json())
+            .then(data => {
+              if (data.components) {
+                setComponents(data.components);
+              }
+            })
+            .catch(error => console.error("Gagal memuat komponen template:", error));
+        }
       } catch (error) {
         console.error("Gagal mem-parsing data template:", error);
       }

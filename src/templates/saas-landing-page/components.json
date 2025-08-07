@@ -1,0 +1,19 @@
+
+{
+    "components": [
+        {
+            "id": "heading-1",
+            "type": "heading",
+            "props": {
+                "text": "SaaS Landing Page"
+            }
+        },
+        {
+            "id": "button-1",
+            "type": "button",
+            "props": {
+                "text": "Get Started"
+            }
+        }
+    ]
+}

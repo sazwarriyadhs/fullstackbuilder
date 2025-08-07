@@ -1,0 +1,21 @@
+
+{
+    "components": [
+        {
+            "id": "heading-1",
+            "type": "heading",
+            "props": {
+                "text": "My Portfolio"
+            }
+        },
+        {
+            "id": "image-1",
+            "type": "image",
+            "props": {
+                "src": "https://placehold.co/600x400.png",
+                "alt": "portfolio project",
+                "aiHint": "abstract design"
+            }
+        }
+    ]
+}
