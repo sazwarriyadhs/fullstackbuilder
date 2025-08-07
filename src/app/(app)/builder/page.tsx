@@ -87,7 +87,7 @@ export default function BuilderPage() {
   return (
     <DndContext onDragEnd={handleDragEnd}>
       <div className="flex h-[calc(100vh-theme(spacing.24))] w-full gap-6">
-        <BuilderTools />
+        <BuilderTools onAddComponent={handleAddComponent} />
         <BuilderCanvas
           components={components}
           setComponents={handleSetComponents}

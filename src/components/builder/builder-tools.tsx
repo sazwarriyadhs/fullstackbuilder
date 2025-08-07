@@ -14,7 +14,7 @@ const components = [
   { name: "Image", icon: ImageIcon, type: 'image' },
 ]
 
-const DraggableTool = ({ component }: {component: any}) => {
+const DraggableTool = ({ component, onAddComponent }: {component: any, onAddComponent: (component: any) => void}) => {
     const {attributes, listeners, setNodeRef, isDragging} = useDraggable({
         id: `tool-${component.type}`,
         data: {
@@ -28,6 +28,7 @@ const DraggableTool = ({ component }: {component: any}) => {
           ref={setNodeRef}
           {...listeners}
           {...attributes}
+          onClick={() => onAddComponent(component)}
           className={cn(
             "flex items-center gap-3 p-2 rounded-md border hover:bg-muted cursor-grab",
             { "opacity-50 cursor-grabbing": isDragging }
@@ -39,16 +40,16 @@ const DraggableTool = ({ component }: {component: any}) => {
       )
 }
 
-export default function BuilderTools() {
+export default function BuilderTools({ onAddComponent }: { onAddComponent: (component: any) => void }) {
   return (
-    <Card className="w-64 hidden lg:block">
+    <Card className="w-64">
       <CardHeader>
         <CardTitle>Components</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid gap-2">
           {components.map((component) => (
-            <DraggableTool key={component.name} component={component} />
+            <DraggableTool key={component.name} component={component} onAddComponent={onAddComponent} />
           ))}
         </div>
       </CardContent>
