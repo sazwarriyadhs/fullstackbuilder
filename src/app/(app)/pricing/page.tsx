@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Check } from "lucide-react";
 import Image from "next/image";
 
@@ -105,23 +106,35 @@ export default function PricingPage() {
        <Card className="mt-12">
         <CardHeader>
           <CardTitle>Pembayaran E-Wallet</CardTitle>
-          <CardDescription>Pindai kode QR untuk melakukan pembayaran dengan e-wallet pilihan Anda.</CardDescription>
+          <CardDescription>Pilih e-wallet pilihan Anda untuk melakukan pembayaran.</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col md:flex-row items-center gap-8">
-            <div className="flex-shrink-0">
-                <Image src="/images/qris.png" alt="QR Code" width={200} height={200} className="rounded-lg" data-ai-hint="payment qris" />
-                <p className="text-center mt-2 text-sm font-medium">087864530047</p>
-                <p className="text-center text-xs text-muted-foreground">a.n Azwar Riyadh Subarkah</p>
-            </div>
-          <div className="flex-1">
-            <p className="mb-4 text-muted-foreground">Kami menerima pembayaran melalui:</p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {ewallets.map((wallet) => (
-                <div key={wallet.name} className="flex items-center justify-center p-4 bg-muted/50 rounded-lg">
-                  <Image src={wallet.logo} alt={wallet.alt} width={80} height={25} objectFit="contain" data-ai-hint={wallet.hint} />
-                </div>
-              ))}
-            </div>
+        <CardContent>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {ewallets.map((wallet) => (
+              <Dialog key={wallet.name}>
+                <DialogTrigger asChild>
+                  <button className="flex items-center justify-center p-4 bg-muted/50 rounded-lg transition-transform hover:scale-105">
+                    <Image src={wallet.logo} alt={wallet.alt} width={100} height={40} objectFit="contain" data-ai-hint={wallet.hint} />
+                  </button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Pembayaran dengan {wallet.name}</DialogTitle>
+                    <DialogDescription>Pindai kode QR di bawah untuk menyelesaikan pembayaran Anda.</DialogDescription>
+                  </DialogHeader>
+                  <div className="flex flex-col items-center gap-4 py-4">
+                    <Image src="/images/qris.png" alt="QR Code" width={250} height={250} className="rounded-lg" data-ai-hint="payment qris" />
+                    <div className="text-center">
+                      <p className="font-medium">087864530047</p>
+                      <p className="text-xs text-muted-foreground">a.n Azwar Riyadh Subarkah</p>
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button className="w-full">Konfirmasi Pembayaran</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            ))}
           </div>
         </CardContent>
       </Card>
