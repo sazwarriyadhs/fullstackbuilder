@@ -56,7 +56,7 @@ const tiers = [
 ];
 
 const ewallets = [
-    { name: 'GoPay', logo: '/images/gopay.png', alt: 'GoPay Logo', hint: 'gopay logo' },
+    { name: 'GoPay', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Gopay_logo.svg/308px-Gopay_logo.svg.png?20210531070158', alt: 'GoPay Logo', hint: 'gopay logo' },
     { name: 'OVO', logo: '/images/ovo.png', alt: 'OVO Logo', hint: 'ovo logo' },
     { name: 'ShopeePay', logo: '/images/shopeepay.png', alt: 'ShopeePay Logo', hint: 'shopeepay logo' },
     { name: 'DANA', logo: '/images/dana.png', alt: 'DANA Logo', hint: 'dana logo' },
