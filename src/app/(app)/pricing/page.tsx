@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Check } from "lucide-react";
 import Image from "next/image";
-import QRCodeComponent from "@/components/qris-code";
+import QRCodeComponent from "@/components/QRCodeComponent";
 
 const tiers = [
   {
