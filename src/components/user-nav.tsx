@@ -85,8 +85,10 @@ export function UserNav() {
             <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/settings/database">Settings</Link>
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+            <Link href="/settings/database">
+                Settings
+                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
